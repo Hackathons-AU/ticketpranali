@@ -1,20 +1,74 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f7f7f7;
+    background-color: #d7faf9 !important;
+    background-size: cover;
     margin: 0;
     padding: 0;
 }
 
+.top-head{
+    font-size: 40px;
+    font-weight: 900;
+    font-family: "monoto";
+    color: blue;
+    text-align: center;
+}
+
+.nav-hd{
+    color: white !important;
+}
+
+.nav-hd:hover{
+    color: yellow !important;
+}
+
+.navhead{
+    font-size: 25px;
+    font-family: "Poppins";
+}
+
+.navbarimg{
+    height: 50px;
+    width: 50px;
+    border-radius: 50px;
+}
+
+#faq h1 {
+    font-size: 2.2rem;
+    color: #007bff;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.crd{
+    border-style: solid;
+    border-width: 20px;
+    border-color: #007bff;
+}
+
+.f-cmn{
+    color: #fff;
+}
+
+.font-imgs{
+    font-size: 25px;
+    color:#fff;
+}
+
 #chat-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 350px;
-    max-width: 100%;
+    background-image: url("https://images.pexels.com/photos/135018/pexels-photo-135018.jpeg?cs=srgb&dl=pexels-joshkjack-135018.jpg&fm=jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    width: 100%;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     background-color: #fff;
+    border-style: solid;
+    border-color: grey;
+    border-width: 2px;
 }
 #chat-header {
     background-color: #007bff;
@@ -25,6 +79,10 @@ body {
     cursor: pointer;
 }
 #chat-box {
+    background-image: url("https://images.pexels.com/photos/135018/pexels-photo-135018.jpeg?cs=srgb&dl=pexels-joshkjack-135018.jpg&fm=jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     height: 400px;
     overflow-y: auto;
     padding: 10px;
@@ -94,8 +152,8 @@ body {
     background-color: #0056b3;
 }
 #chat-box.minimized {
-    height: 50px;
-    overflow: hidden;
+    height: 110px;
+    overflow-y: auto;
 }
 #chat-box.minimized #send-button,
 #chat-box.minimized #user-input {
@@ -119,3 +177,10 @@ body {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* @media (max-width:991px){
+    body{
+       padding: 0;
+       margin: 0;
+    }
+} */

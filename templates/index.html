@@ -5,47 +5,180 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://kit.fontawesome.com/e71e11fa5b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-
 </head>
 <body>
     <div id="home">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand nav-lg pt-1 pb-3" href="#aboutme"> Ticket Pranali </a>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand nav-lg d-flex flex-row" href="#aboutme"> 
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="navbarimg" alt="Logo" />
+            <h1 class="navhead ml-2 mt-auto mb-auto"> Ticket Pranali  </h1>
+            </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ml-auto">
                     <a class="nav-link active nav-hd" href="#home"> Home </a>
-                    <a class="nav-link nav-hd" href="#aboutme"> About me </a>
-                    <a class="nav-link nav-hd" href="#projects"> Projects </a>
-                    <a class="nav-link nav-hd" href="#services"> services </a>
-                    <a class="nav-link nav-hd" href="#info"> My Contact </a>
+                    <a class="nav-link nav-hd" href="#faq"> FAQ's </a>
+                    <a class="nav-link nav-hd" href="#services"> Blogs </a>
+                    <a class="nav-link nav-hd" href="#info">  Contact Us </a>
                 </div>
             </div>
         </nav>
     </div>
 
-
-    <div id="chat-container">
-        <div id="chat-header">
-            Chatbot
-            <button id="minimize-button"><i class="fas fa-minus"></i></button>
-        </div>
-        <div id="chat-box">
-            <!-- Messages will be appended here -->
-            <div id="loading-spinner" class="spinner"></div>
-        </div>
-        <div style="display: flex; align-items: center; padding: 10px;">
-            <input type="text" id="user-input" placeholder="Type your message...">
-            <button id="send-button"><i class="fas fa-paper-plane"></i> Send</button>
+    <div id="first-sec">
+        <div class="container mt-5 mb-3">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="top-head"> Welcome to Ticket Pranali </h1>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div class="container mt-3 mb-3">
+        <div class="row">
+            <div class="col-12">
+                <div id="chat-container">
+                    <div id="chat-header">
+                        Chatbot
+                        <button id="minimize-button"><i class="fas fa-minus"></i></button>
+                    </div>
+                    <div id="chat-box">
+                        <!-- Messages will be appended here -->
+                        <div id="loading-spinner" class="spinner"></div>
+                    </div>
+                    <div style="display: flex; align-items: center; padding: 10px;">
+                        <input type="text" id="user-input" placeholder="Type your message...">
+                        <button id="send-button"><i class="fas fa-paper-plane"></i> Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+
+    <div id="faq" class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="mb-4 text-primary">FAQ's (Frequently Asked Questions)</h1>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div id="accordionExample">
+                        <div class="card crd mb-2 shadow">
+                            <div class="card-header" id="headingOne">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        Accordion Item #1
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="headingTwo">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                        Accordion Item #2
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="headingThree">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        Accordion Item #3
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer id="info" class="footer bg-dark text-white text-start mt-auto">
+        <div class="container pt-4 pl-3">
+            <div class="row ms-auto me-auto">
+                <div class="col-md-4 col-xs-12 d-flex flex-row justify-content-md-center justify-content-xs-start mt-4">
+                    <div class="text-start">
+                        <a href="#chat-container" class="text-decoration-none">
+                            <h4 class="mb-2 f-cmn"> Ticket Pranali </h4>
+                        </a>
+                        <p class="f-cmn">Book Your Tickets To Experience <br/> the India's Wonderful Museums </p>
+                        <div class="d-flex flex-row mt-4">
+                            <a href="https://facebook.com" target="_blank" class="mr-4 font-imgs">
+                                <i class="fab fa-facebook-square font"></i>
+                            </a>
+                            <a href="https://instagram.com" target="_blank" class="mr-4 font-imgs">
+                                <i class="fab fa-instagram font"></i>
+                            </a>
+                            <a href="https://linkedin.com" target="_blank" class="font-imgs">
+                                <i class="fab fa-linkedin font"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12 d-flex flex-row justify-content-md-center justify-content-xs-start mt-4">
+                    <div class="text-start">
+                        <h5 class="mb-2">Main Links</h5>
+                        <a href="/faq" class="text-decoration-none f-cmn">FAQ</a><br/>
+                        <a href="/blog" class="text-decoration-none lnk f-cmn">Blog</a><br/>
+                        <a href="/testimonials" class="text-decoration-none f-cmn">Testimonials</a>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xs-12 d-flex flex-row justify-content-md-center justify-content-xs-start mt-4">
+                    <div class="text-start">
+                        <h5 class="mb-2">Contact Us</h5>
+                        <p class="mb-2">
+                            <i class="fas fa-envelope mr-2 font-imgs"></i>Email: info@ticketpranali.com
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-phone mr-2 font-imgs"></i>Phone: 99999999999
+                        </p>
+                        <p class="mb-2">
+                            <i class="fas fa-location-dot mr-2 font-imgs"></i>
+                            GITAM Medical College, Road,<br/> Yendada, Rushikonda, Visakhapatnam,<br/> Andhra Pradesh 530045
+                        </p>
+                    </div>
+                </div>
+            </div>
+    
+    
+            <div class="row mt-3">
+                <div class="col-md-12 text-center">
+                    <p>&copy; <script>document.write(new Date().getFullYear());</script> Ticket Pranali. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
 
     <script>
         let isMinimized = false;
