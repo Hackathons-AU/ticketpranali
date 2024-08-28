@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div id="home">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand nav-lg pt-1 pb-3" href="#aboutme"> Ticket Pranali </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav ml-auto">
+                    <a class="nav-link active nav-hd" href="#home"> Home </a>
+                    <a class="nav-link nav-hd" href="#aboutme"> About me </a>
+                    <a class="nav-link nav-hd" href="#projects"> Projects </a>
+                    <a class="nav-link nav-hd" href="#services"> services </a>
+                    <a class="nav-link nav-hd" href="#info"> My Contact </a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+    <div id="chat-container">
+        <div id="chat-header">
+            Chatbot
+            <button id="minimize-button"><i class="fas fa-minus"></i></button>
+        </div>
+        <div id="chat-box">
+            <!-- Messages will be appended here -->
+            <div id="loading-spinner" class="spinner"></div>
+        </div>
+        <div style="display: flex; align-items: center; padding: 10px;">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button id="send-button"><i class="fas fa-paper-plane"></i> Send</button>
+        </div>
+    </div>
+
+    <script>
+        let isMinimized = false;
+
+        document.getElementById('send-button').addEventListener('click', async () => {
+            const userInput = document.getElementById('user-input').value.trim();
+            if (userInput === '') return;
+
+            appendMessage('You', userInput, 'user');
+            document.getElementById('user-input').value = '';
+
+            // Show the loading spinner
+            const spinner = document.getElementById('loading-spinner');
+            spinner.style.display = 'block';
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: userInput })
+                });
+
+                if (!response.ok) {
+                    console.error('Server response error:', response.statusText);
+                    return;
+                }
+
+                const data = await response.json();
+
+                appendMessage('ChatGPT', data.reply || 'No reply', 'assistant');
+            } catch (error) {
+                console.error('Fetch error:', error);
+            } finally {
+                // Hide the loading spinner
+                spinner.style.display = 'none';
+            }
+        });
+
+        document.getElementById('minimize-button').addEventListener('click', () => {
+            const chatBox = document.getElementById('chat-box');
+            if (isMinimized) {
+                chatBox.classList.remove('minimized');
+                document.getElementById('minimize-button').innerHTML = '<i class="fas fa-minus"></i>';
+                isMinimized = false;
+            } else {
+                chatBox.classList.add('minimized');
+                document.getElementById('minimize-button').innerHTML = '<i class="fas fa-plus"></i>';
+                isMinimized = true;
+            }
+        });
+
+        function appendMessage(sender, message, type) {
+    const chatBox = document.getElementById('chat-box');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${type}`; // Fixed the string interpolation
+    const messageContent = document.createElement('div');
+    messageContent.className = 'message-content';
+    messageContent.textContent = `${sender}: ${message}`; // Fixed the string interpolation
+    messageDiv.appendChild(messageContent);
+    chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+}
+
+    </script>
+</body>
+</html>
