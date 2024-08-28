@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <div class="container mt-3 mb-3">
+    <div id="bot" class="container mt-3 mb-3">
         <div class="row">
             <div class="col-12">
                 <div id="chat-container">
@@ -128,7 +128,7 @@
             <div class="row ms-auto me-auto">
                 <div class="col-md-4 col-xs-12 d-flex flex-row justify-content-md-center justify-content-xs-start mt-4">
                     <div class="text-start">
-                        <a href="#chat-container" class="text-decoration-none">
+                        <a href="#bot" class="text-decoration-none">
                             <h4 class="mb-2 f-cmn"> Ticket Pranali </h4>
                         </a>
                         <p class="f-cmn">Book Your Tickets To Experience <br/> the India's Wonderful Museums </p>
@@ -182,18 +182,19 @@
 
     <script>
         let isMinimized = false;
-
-        document.getElementById('send-button').addEventListener('click', async () => {
+    
+        // Function to handle sending the message
+        async function sendMessage() {
             const userInput = document.getElementById('user-input').value.trim();
             if (userInput === '') return;
-
+    
             appendMessage('You', userInput, 'user');
             document.getElementById('user-input').value = '';
-
+    
             // Show the loading spinner
             const spinner = document.getElementById('loading-spinner');
             spinner.style.display = 'block';
-
+    
             try {
                 const response = await fetch('/chat', {
                     method: 'POST',
@@ -202,14 +203,13 @@
                     },
                     body: JSON.stringify({ message: userInput })
                 });
-
+    
                 if (!response.ok) {
                     console.error('Server response error:', response.statusText);
                     return;
                 }
-
+    
                 const data = await response.json();
-
                 appendMessage('ChatGPT', data.reply || 'No reply', 'assistant');
             } catch (error) {
                 console.error('Fetch error:', error);
@@ -217,8 +217,22 @@
                 // Hide the loading spinner
                 spinner.style.display = 'none';
             }
+        }
+    
+        // Event listener for the "Enter" key
+        document.getElementById('user-input').addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Prevents the default action of the Enter key
+                sendMessage(); // Call the sendMessage function
+            }
         });
-
+    
+        // Event listener for the "Send" button
+        document.getElementById('send-button').addEventListener('click', () => {
+            sendMessage(); // Call the sendMessage function
+        });
+    
+        // Event listener for the minimize button
         document.getElementById('minimize-button').addEventListener('click', () => {
             const chatBox = document.getElementById('chat-box');
             if (isMinimized) {
@@ -231,19 +245,21 @@
                 isMinimized = true;
             }
         });
-
+    
+        // Function to append messages to the chat box
         function appendMessage(sender, message, type) {
-    const chatBox = document.getElementById('chat-box');
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${type}`; // Fixed the string interpolation
-    const messageContent = document.createElement('div');
-    messageContent.className = 'message-content';
-    messageContent.textContent = `${sender}: ${message}`; // Fixed the string interpolation
-    messageDiv.appendChild(messageContent);
-    chatBox.appendChild(messageDiv);
-    chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
-}
-
+            const chatBox = document.getElementById('chat-box');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            const messageContent = document.createElement('div');
+            messageContent.className = 'message-content';
+            messageContent.textContent = `${sender}: ${message}`;
+            messageDiv.appendChild(messageContent);
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+        }
     </script>
+    
+    
 </body>
 </html>
