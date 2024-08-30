@@ -183,70 +183,76 @@
     <script>
         let isMinimized = false;
     
-        // Function to handle sending the message
-        async function sendMessage() {
-            const userInput = document.getElementById('user-input').value.trim();
-            if (userInput === '') return;
-    
-            appendMessage('You', userInput, 'user');
-            document.getElementById('user-input').value = '';
-    
-            // Show the loading spinner
-            const spinner = document.getElementById('loading-spinner');
-            spinner.style.display = 'block';
-    
-            try {
-                const response = await fetch('/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ message: userInput })
-                });
-    
-                if (!response.ok) {
-                    console.error('Server response error:', response.statusText);
-                    return;
-                }
-    
-                const data = await response.json();
-                appendMessage('ChatGPT', data.reply || 'No reply', 'assistant');
-            } catch (error) {
-                console.error('Fetch error:', error);
-            } finally {
-                // Hide the loading spinner
-                spinner.style.display = 'none';
-            }
-        }
-    
-        // Event listener for the "Enter" key
-        document.getElementById('user-input').addEventListener('keydown', (event) => {
+        document.getElementById('user-input').addEventListener('keydown', async (event) => {
             if (event.key === 'Enter') {
-                event.preventDefault(); // Prevents the default action of the Enter key
-                sendMessage(); // Call the sendMessage function
+                event.preventDefault();
+    
+                const userInput = document.getElementById('user-input').value.trim();
+                if (userInput === '') return;
+    
+                appendMessage('You', userInput, 'user');
+                document.getElementById('user-input').value = '';
+    
+                const spinner = document.getElementById('loading-spinner');
+                spinner.style.display = 'block';
+    
+                try {
+                    const response = await fetch('/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ message: userInput })
+                    });
+    
+                    if (!response.ok) {
+                        console.error('Server response error:', response.statusText);
+                        return;
+                    }
+    
+                    const data = await response.json();
+                    appendMessage('ChatGPT', data.reply || 'No reply', 'assistant');
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                } finally {
+                    spinner.style.display = 'none';
+                }
             }
         });
     
-        // Event listener for the "Send" button
-        document.getElementById('send-button').addEventListener('click', () => {
-            sendMessage(); // Call the sendMessage function
+        isMinimized = false;
+
+        document.getElementById('minimize-button').addEventListener('click', (event) => {
+            event.stopPropagation(); // Prevents the event from bubbling up and expanding the chat container again
+
+        const chatContainer = document.getElementById('chat-container');
+
+        if (isMinimized) {
+        // Expand the chat container
+        chatContainer.classList.remove('minimized');
+        chatContainer.classList.remove('minimized-logo');
+        document.getElementById('minimize-button').innerHTML = '<i class="fas fa-minus"></i>';
+        isMinimized = false;
+        } else {
+        // Minimize the chat container
+        chatContainer.classList.add('minimized');
+        chatContainer.classList.add('minimized-logo');
+        isMinimized = true;
+        }
         });
-    
-        // Event listener for the minimize button
-        document.getElementById('minimize-button').addEventListener('click', () => {
-            const chatBox = document.getElementById('chat-box');
-            if (isMinimized) {
-                chatBox.classList.remove('minimized');
-                document.getElementById('minimize-button').innerHTML = '<i class="fas fa-minus"></i>';
-                isMinimized = false;
-            } else {
-                chatBox.classList.add('minimized');
-                document.getElementById('minimize-button').innerHTML = '<i class="fas fa-plus"></i>';
-                isMinimized = true;
-            }
+
+        document.getElementById('chat-container').addEventListener('click', () => {
+        if (isMinimized) {
+        // Expand the chat container when clicking the minimized logo
+        const chatContainer = document.getElementById('chat-container');
+        chatContainer.classList.remove('minimized');
+        chatContainer.classList.remove('minimized-logo');
+        document.getElementById('minimize-button').innerHTML = '<i class="fas fa-minus"></i>';
+        isMinimized = false;
+        }
         });
+
     
-        // Function to append messages to the chat box
         function appendMessage(sender, message, type) {
             const chatBox = document.getElementById('chat-box');
             const messageDiv = document.createElement('div');
@@ -256,8 +262,18 @@
             messageContent.textContent = `${sender}: ${message}`;
             messageDiv.appendChild(messageContent);
             chatBox.appendChild(messageDiv);
-            chatBox.scrollTop = chatBox.scrollHeight; // Scroll to the bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
+    
+        document.getElementById('chat-container').addEventListener('click', () => {
+            if (isMinimized) {
+                const chatContainer = document.getElementById('chat-container');
+                chatContainer.classList.remove('minimized');
+                chatContainer.classList.remove('minimized-logo');
+                document.getElementById('minimize-button').innerHTML = '<i class="fas fa-minus"></i>';
+                isMinimized = false;
+            }
+        });
     </script>
     
     

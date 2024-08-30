@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #d7faf9 !important;
+    background-color: #a7fcfa !important;
     background-size: cover;
     margin: 0;
     padding: 0;
@@ -55,21 +55,6 @@ body {
     color:#fff;
 }
 
-#chat-container {
-    background-image: url("https://images.pexels.com/photos/135018/pexels-photo-135018.jpeg?cs=srgb&dl=pexels-joshkjack-135018.jpg&fm=jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    position: relative;
-    width: 100%;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    background-color: #fff;
-    border-style: solid;
-    border-color: grey;
-    border-width: 2px;
-}
 #chat-header {
     background-color: #007bff;
     color: #fff;
@@ -133,6 +118,84 @@ body {
 #send-button:hover {
     background-color: #0056b3;
 }
+
+
+#chat-container {
+    background-image: url("https://images.pexels.com/photos/135018/pexels-photo-135018.jpeg?cs=srgb&dl=pexels-joshkjack-135018.jpg&fm=jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    background-color: #fff;
+    border-style: solid;
+    border-color: grey;
+    border-width: 2px;
+    transition: all 0.3s ease;
+}
+
+#chat-container.minimized {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    background-color: #007bff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("{{ url_for('static', filename='images/logo.jpg') }}") !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1000;
+}
+
+#chat-container.minimized-logo {
+    z-index: 1000;
+    padding: 0;
+}
+
+
+
+#chat-container.minimized #chat-box{
+    display: none;
+    overflow: hidden;
+}
+
+
+#chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#chat-container.minimized #chat-header {
+    display: none !important;
+}
+
+#chat-container.minimized #user-input,
+#chat-container.minimized #send-button{
+    display: none;
+}
+
+/* Additional styles for the minimized logo icon */
+#chat-container.minimized::before {
+    content: '\f19c'; /* Font Awesome chat icon */
+    font-family: 'Font Awesome 5 Free';
+    text-align: center;
+    margin-left: 19px;
+    font-weight: 900;
+    font-size: 30px;
+    color: #fff;
+}
+
 #minimize-button {
     position: absolute;
     top: 5px;
@@ -148,17 +211,22 @@ body {
     justify-content: center;
     cursor: pointer;
 }
+
 #minimize-button:hover {
     background-color: #0056b3;
 }
-#chat-box.minimized {
-    height: 110px;
-    overflow-y: auto;
-}
-#chat-box.minimized #send-button,
-#chat-box.minimized #user-input {
+
+/* Hide the minimize button only when the chat container is in its minimized state */
+#chat-container.minimized #minimize-button {
     display: none;
 }
+
+/* When the chat container is not minimized, the minimize button should be visible */
+#chat-container:not(.minimized) #minimize-button {
+    display: flex;
+}
+
+
 /* Spinner styles */
 .spinner {
     position: absolute;
