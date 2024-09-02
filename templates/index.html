@@ -12,7 +12,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-
 </head>
 <body>
     <div id="home">
@@ -44,8 +43,6 @@
             </div>
         </nav>
     </div>
-
-    
 
     <div id="common" class="container-fluid">
         <div class="row">
@@ -132,7 +129,6 @@
         </div>
     </div>
 
-
     <div id="aboutus">
         <div class="container">
             <div class="row pt-5 pb-5">
@@ -191,10 +187,6 @@
             </div>
         </div>
     </div>
-
-    
-   
-
 
     <div id="faq">
         <div class="container p-3 pt-3">
@@ -308,131 +300,6 @@
         </div>
     </footer>
     
-
-    <script>
-    
-    function showInfo(id) {
-    // Hide all info boxes
-    document.querySelectorAll('.info-box').forEach(box => {
-        box.style.display = 'none';
-    });
-    // Show the selected info box
-    const box = document.getElementById(id);
-    box.style.display = 'block';
-    }
-
-
-    function closeInfo(id) {
-        var element = document.getElementById(id);
-        element.style.display = 'none';
-    }
-
-
-        let isMinimized = false;
-    
-        document.getElementById('user-input').addEventListener('keydown', async (event) => {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-    
-                const userInput = document.getElementById('user-input').value.trim();
-                if (userInput === '') return;
-    
-                appendMessage('You', userInput, 'user');
-                document.getElementById('user-input').value = '';
-    
-                const spinner = document.getElementById('loading-spinner');
-                spinner.style.display = 'block';
-    
-                try {
-                    const response = await fetch('/chat', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ message: userInput })
-                    });
-    
-                    if (!response.ok) {
-                        console.error('Server response error:', response.statusText);
-                        return;
-                    }
-    
-                    const data = await response.json();
-                    appendMessage('ChatGPT', data.reply || 'No reply', 'assistant');
-                } catch (error) {
-                    console.error('Fetch error:', error);
-                } finally {
-                    spinner.style.display = 'none';
-                }
-            }
-        });
-    
-        isMinimized = false;
-
-        document.getElementById('minimize-button').addEventListener('click', (event) => {
-            event.stopPropagation(); // Prevents the event from bubbling up and expanding the chat container again
-
-        const chatContainer = document.getElementById('chat-container');
-        const welcome = document.getElementById('welcome');
-        var map = document.getElementById('map');
-
-        if (isMinimized) {
-        // Expand the chat container
-        chatContainer.classList.remove('minimized');
-        chatContainer.classList.remove('minimized-logo');
-        document.getElementById('minimize-button').innerHTML = '<i class="fas fa-minus"></i>';
-        isMinimized = false;
-        } else {
-        // Minimize the chat container
-        chatContainer.classList.add('minimized');
-        chatContainer.classList.add('minimized-logo');
-        isMinimized = true;
-        welcome.textContent = " ";
-        map.className = 'container-fluid';
-        map.scrollIntoView({ 
-        behavior: 'smooth', // Smooth scrolling
-        block: 'start' // Align to the top of the element (can be 'start', 'center', 'end', 'nearest')
-        });
-        }
-        });
-
-        document.getElementById('chat-container').addEventListener('click', () => {
-        if (isMinimized) {
-        // Expand the chat container when clicking the minimized logo
-        const chatContainer = document.getElementById('chat-container');
-        chatContainer.classList.remove('minimized');
-        chatContainer.classList.remove('minimized-logo');
-        document.getElementById('minimize-button').innerHTML = '<i class="fas fa-minus"></i>';
-        isMinimized = false;
-        welcome.textContent = "Welcome to Ticket Pranali";
-        map.classList.replace('container-fluid', 'container');
-        }
-        });
-
-    
-        function appendMessage(sender, message, type) {
-            const chatBox = document.getElementById('chat-box');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${type}`;
-            const messageContent = document.createElement('div');
-            messageContent.className = 'message-content';
-            messageContent.textContent = `${sender}: ${message}`;
-            messageDiv.appendChild(messageContent);
-            chatBox.appendChild(messageDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-    
-        document.getElementById('chat-container').addEventListener('click', () => {
-            if (isMinimized) {
-                const chatContainer = document.getElementById('chat-container');
-                chatContainer.classList.remove('minimized');
-                chatContainer.classList.remove('minimized-logo');
-                document.getElementById('minimize-button').innerHTML = '<i class="fas fa-minus"></i>';
-                isMinimized = false;
-            }
-        });
-    </script>
-    
-    
+<script src="{{ url_for('static', filename='script.js') }}"></script>   
 </body>
 </html>
