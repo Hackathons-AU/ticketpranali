@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,10 +12,11 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
 </head>
 <body>
     <div id="home">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <nav class="navbar navbar-expand-lg navbar-dark custom-navbar ">
             <a class="navbar-brand nav-lg d-flex flex-row" href="#aboutme"> 
                 <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="navbarimg" alt="Logo" />
             <h1 class="navhead ml-2 mt-auto mb-auto"> Ticket Pranali  </h1>
@@ -28,96 +30,223 @@
                     <a class="nav-link nav-hd" href="#faq"> FAQ's </a>
                     <a class="nav-link nav-hd" href="#services"> Blogs </a>
                     <a class="nav-link nav-hd" href="#info">  Contact Us </a>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle nav-hd" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Language
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#" data-lang="en">English</a>
+                            <a class="dropdown-item" href="#" data-lang="te">Telugu</a>
+                            <a class="dropdown-item" href="#" data-lang="hi">Hindi</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
     </div>
 
-    <div id="first-sec">
-        <div class="container mt-5 mb-3">
-            <div class="row">
-                <div class="col-12">
-                    <h1 class="top-head"> Welcome to Ticket Pranali </h1>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
-    <div id="bot" class="container mt-3 mb-3">
+    <div id="common" class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <div id="chat-container">
-                    <div id="chat-header">
-                        Chatbot
-                        <button id="minimize-button"><i class="fas fa-minus"></i></button>
-                    </div>
-                    <div id="chat-box">
-                        <!-- Messages will be appended here -->
-                        <div id="loading-spinner" class="spinner"></div>
-                    </div>
-                    <div style="display: flex; align-items: center; padding: 10px;">
-                        <input type="text" id="user-input" placeholder="Type your message...">
-                        <button id="send-button"><i class="fas fa-paper-plane"></i> Send</button>
+
+                <div id="first-sec">
+                    <div class="container mt-5 mb-3">
+                        <div class="row">
+                            <div class="col-12">
+                                <h1 id="welcome" class="top-head"> Welcome to Ticket Pranali </h1>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
+                <div id="bot" class="container mt-3 mb-3">
+                    <div class="row">
+                        <div class="col-12">
+                            <div id="chat-container">
+                                <div id="chat-header">
+                                    Chatbot
+                                    <button id="minimize-button"><i class="fas fa-minus"></i></button>
+                                </div>
+                                <div id="chat-box">
+                                    <!-- Messages will be appended here -->
+                                    <div id="loading-spinner" class="spinner"></div>
+                                </div>
+                                <div style="display: flex; align-items: center; padding: 10px;">
+                                    <input type="text" id="user-input" placeholder="Type your message...">
+                                    <button id="send-button"><i class="fas fa-paper-plane"></i> Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div id="map" class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="map-container">
+                                <h1 class="mb-0 text-center m-head"> Click to see Interactive Map </h1>
+                                <img src="{{ url_for('static', filename='images/museum.svg') }}" usemap="#museummap" alt="Museum Map" class="m-img mt-0">
+                            <map name="museummap">
+                            <!-- Left Third -->
+                            <area shape="rect" coords="0,0,600,800" href="#" alt="Ancient Artifacts" onclick="showInfo('ancient'); return false;">
+                            
+                            <!-- Middle Third -->
+                            <area shape="rect" coords="600,0,850,800" href="#" alt="Modern Art" onclick="showInfo('modern'); return false;">
+                            
+                            <area shape="rect" coords="850,0,1100,800" href="#" alt="Modern Art" onclick="showInfo('modern2'); return false;">
+                            
+                            <!-- Right Third -->
+                            <area shape="rect" coords="1100,0,1600,800" href="#" alt="Interactive Exhibits" onclick="showInfo('interactive'); return false;">
+                            </map>
+                        
+                        
+                                <div id="ancient" class="info-box">
+                                    <button class="close-btn" onclick="closeInfo('ancient')">×</button>
+                                    <h2>Ancient Artifacts</h2>
+                                    <p>Explore the wonders of ancient civilizations.</p>
+                                </div>
+                                <div id="modern" class="info-box">
+                                    <button class="close-btn" onclick="closeInfo('modern')">×</button>
+                                    <h2>Modern Art</h2>
+                                    <p>Discover contemporary masterpieces.</p>
+                                </div>
+                                <div id="modern2" class="info-box">
+                                    <button class="close-btn" onclick="closeInfo('modern2')">×</button>
+                                    <h2>Natural History</h2>
+                                    <p>Observe organisms in their natural habitats.</p>
+                                </div>
+                                <div id="interactive" class="info-box">
+                                    <button class="close-btn" onclick="closeInfo('interactive')">×</button>
+                                    <h2>Interactive Exhibits</h2>
+                                    <p>Engage with hands-on displays.</p>
+                                </div>
+                            </div>
+            
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+
+
+    <div id="aboutus">
+        <div class="container">
+            <div class="row pt-5 pb-5">
+                <div class="col-12 mb-4">
+                    <h1 class="a-head2"> About Us </h1>
+                </div>
+                <div class="col-12 col-md-6 mb-5 order-1 order-md-1">
+                    <div>
+                        <img src="{{ url_for('static', filename='images/about1.jpg') }}" class="a-img w-100">
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 d-flex flex-column justify-content-md-center mb-5 order-2 order-md-2">
+                    <h1 class="a-head mb-4"> Why You should Use Our App? </h1>
+                    <p class="a-para"> Our website offers a seamless and hassle-free experience for booking tickets to museums across India. Here’s why you should choose us:                    </p>
+                    <p class="a-para"> <span class="a-span">1. Convenience and Flexibility: </span> 
+                    Book your tickets anytime, anywhere, from the comfort of your home or on the go. Our user-friendly interface ensures a smooth and quick booking process.
+                    </p>
+                </div>
+
+                <div class="col-12 col-md-6 d-flex flex-column justify-content-md-center mb-5 order-4 order-md-3">
+                    <p class="a-para"> <span class="a-span">2. Wide Selection of Museums: </span> 
+                        We partner with a diverse range of museums across India, offering you access to popular destinations and hidden gems alike.
+                    </p>
+                    <p class="a-para"> <span class="a-span">3. Real-Time Availability: </span> 
+                        Our platform provides up-to-date information on ticket availability, ensuring you get your preferred time slots without any surprises.                        
+                    </p>
+                    <p class="a-para"> <span class="a-span">4. Secure Payments:  </span> 
+                        Your transactions are safe with us. We use advanced encryption technology to protect your payment information.                    </p>
+                </div>
+
+                <div class="col-12 col-md-6 mb-5 order-3 order-md-4">
+                    <div>
+                        <img src="{{ url_for('static', filename='images/about2.jpg') }}" class="a-img w-100">
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 order-5 order-md-5">
+                    <div>
+                        <img src="{{ url_for('static', filename='images/about3.jpg') }}" class="a-img w-100">
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 d-flex flex-column justify-content-md-center order-6 order-md-6">
+                    <p class="a-para"> <span class="a-span">5. Special Offers and Discounts:  </span> 
+                        Enjoy exclusive deals and discounts on museum tickets, making your visit more affordable.</p>
+                    <p class="a-para"> <span class="a-span">6. Skip the Queues: </span> 
+                        Save time by skipping the long queues at the ticket counters. With our e-tickets, you can walk straight into the museum.
+                    </p>
+                    <p class="a-para"> <span class="a-span">7. Customer Support:  </span> 
+                        Our dedicated customer support team is available to assist you with any queries or issues, ensuring a smooth experience from start to finish.
+                    </p>
+                    <p class="a-para" style="font-weight: 700;"> By choosing our website, you’re not just booking a ticket—you’re securing a memorable and enriching experience at some of India’s finest museums.</p>
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    
    
 
-    <div id="faq" class="py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center">
-                    <h1 class="mb-4 text-primary">FAQ's (Frequently Asked Questions)</h1>
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
+
+    <div id="faq">
+        <div class="container p-3 pt-3">
+            <div class="row mt-0 mb-3">
+                <div class="col-12 mb-3 pt-5">
+                    <div class="faq-box shadow-lg ml-auto mr-auto">
+                    <h1 class="mb-4 text-primary text-center">FAQs (Frequently Asked Questions)</h1>
                     <div id="accordionExample">
-                        <div class="card crd mb-2 shadow">
-                            <div class="card-header" id="headingOne">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        Accordion Item #1
-                                    </button>
-                                </h5>
-                            </div>
-                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                <div class="card-body">
-                                    <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-2 shadow">
-                            <div class="card-header" id="headingTwo">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        Accordion Item #2
-                                    </button>
-                                </h5>
-                            </div>
-                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                                <div class="card-body">
-                                    <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-2 shadow">
-                            <div class="card-header" id="headingThree">
-                                <h5 class="mb-0">
-                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                        Accordion Item #3
-                                    </button>
-                                </h5>
-                            </div>
-                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                                <div class="card-body">
-                                    <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                                </div>
-                            </div>
-                        </div>
+                                    <div class="card crd mb-2 shadow">
+                                        <div class="card-header" id="headingOne">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                    Accordion Item #1
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-2 shadow">
+                                        <div class="card-header" id="headingTwo">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                    Accordion Item #2
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-2 shadow">
+                                        <div class="card-header" id="headingThree">
+                                            <h5 class="mb-0">
+                                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                    Accordion Item #3
+                                                </button>
+                                            </h5>
+                                        </div>
+                                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                            </div>
+                                        </div>
+                                    </div>
                     </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -181,6 +310,24 @@
     
 
     <script>
+    
+    function showInfo(id) {
+    // Hide all info boxes
+    document.querySelectorAll('.info-box').forEach(box => {
+        box.style.display = 'none';
+    });
+    // Show the selected info box
+    const box = document.getElementById(id);
+    box.style.display = 'block';
+    }
+
+
+    function closeInfo(id) {
+        var element = document.getElementById(id);
+        element.style.display = 'none';
+    }
+
+
         let isMinimized = false;
     
         document.getElementById('user-input').addEventListener('keydown', async (event) => {
@@ -226,6 +373,8 @@
             event.stopPropagation(); // Prevents the event from bubbling up and expanding the chat container again
 
         const chatContainer = document.getElementById('chat-container');
+        const welcome = document.getElementById('welcome');
+        var map = document.getElementById('map');
 
         if (isMinimized) {
         // Expand the chat container
@@ -238,6 +387,12 @@
         chatContainer.classList.add('minimized');
         chatContainer.classList.add('minimized-logo');
         isMinimized = true;
+        welcome.textContent = " ";
+        map.className = 'container-fluid';
+        map.scrollIntoView({ 
+        behavior: 'smooth', // Smooth scrolling
+        block: 'start' // Align to the top of the element (can be 'start', 'center', 'end', 'nearest')
+        });
         }
         });
 
@@ -249,6 +404,8 @@
         chatContainer.classList.remove('minimized-logo');
         document.getElementById('minimize-button').innerHTML = '<i class="fas fa-minus"></i>';
         isMinimized = false;
+        welcome.textContent = "Welcome to Ticket Pranali";
+        map.classList.replace('container-fluid', 'container');
         }
         });
 

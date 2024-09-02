@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #a7fcfa !important;
+    background-color: #b0edf5 !important;
     background-size: cover;
     margin: 0;
     padding: 0;
@@ -10,8 +10,12 @@ body {
     font-size: 40px;
     font-weight: 900;
     font-family: "monoto";
-    color: blue;
+    color: #16325B;
     text-align: center;
+}
+
+.custom-navbar{
+    background-color: #4bb2bf;
 }
 
 .nav-hd{
@@ -24,7 +28,7 @@ body {
 
 .navhead{
     font-size: 25px;
-    font-family: "Poppins";
+    font-family: "Roboto";
 }
 
 .navbarimg{
@@ -33,11 +37,135 @@ body {
     border-radius: 50px;
 }
 
+.map-container {
+    position: relative;
+    max-width: 100%;
+}
+.map-container img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.info-box {
+display: none; /* Hidden by default */
+position: absolute;
+background: white;
+border: 1px solid #ddd;
+padding: 1rem;
+border-radius: 8px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+max-width: 300px;
+z-index: 10;
+/* Additional styles */
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+}
+
+
+/* Adjust these positions based on your layout needs */
+#ancient {
+top: 490px;
+left: 0px;
+}
+
+#modern {
+top: 490px;
+left: 600px; /* Adjust as needed */
+}
+
+#modern2 {
+top: 490px;
+left: 850px; /* Adjust as needed */
+}
+
+#interactive {
+top: 490px;
+left: 1100px; /* Adjust as needed */
+}
+
+
+.a-head{
+    color: #000;
+    font-size: 38px;
+    font-weight: 600;
+}
+
+.a-img{
+    border-radius: 10px !important;
+    animation: highlightAnimation 8s infinite;
+}
+
+.m-head{
+    margin-top: 0px; /* Adjust as needed */
+    margin-bottom: 0px;
+    padding: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.m-img{
+    margin-top: 0;
+    padding: 0;
+    position: relative;
+    z-index: 0;
+}
+
+@keyframes highlightAnimation {
+    0% {
+      opacity: 0.8;
+      transform: scale(0.95);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+    100% {
+      opacity: 0.8;
+      transform: scale(0.95);
+    }
+}
+
+.a-head2{
+    color: #000;
+    font-size: 40px;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.a-span{
+    font-weight: 700;
+}
+
+.a-para{
+    color: #000;
+    font-size: 18px
+}
+
 #faq h1 {
     font-size: 2.2rem;
-    color: #007bff;
-    text-transform: uppercase;
-    font-weight: bold;
+    color: #fff !important;
+}
+
+#faq{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.faq-box{
+    background-color: #217d8a;
+    border-radius: 10px;
+    padding: 30px;
+    width: 100%;
 }
 
 .crd{
@@ -125,7 +253,8 @@ body {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    position: relative;
+    position:  absolute;
+    z-index: 1000;
     width: 100%;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -245,10 +374,10 @@ body {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
-/* @media (max-width:991px){
-    body{
-       padding: 0;
-       margin: 0;
+/* 
+@media (max-width:991px){
+    #chat-container{
+        position: relative;
+        z-index: 1000;
     }
 } */
