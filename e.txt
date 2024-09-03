@@ -1,0 +1,16 @@
+Museum Ticket Booking Details:
+Discounts: Group size >10: 10% discount.
+Educational purpose: Additional 10% discount.
+Ticket Pricing: Adult (11 years and older): $500
+Child (10 years and younger): $250
+Infant (less than 2 years old): Free
+Add a Tour guide: $200 added to total cost of ticket.
+Regional Discounts:
+Indian: 90% discount.
+SAARC countries: 50% discount.
+Other regions: Full ticket price.
+Opening Hours:
+Monday to Saturday: 9 A.M. to 6 P.M.
+Ticket Delivery:
+Sent via email or phone number.
+

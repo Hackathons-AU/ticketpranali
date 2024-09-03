@@ -41,13 +41,14 @@ async function sendMessage() {
         }
 
         const data = await response.json();
-        appendMessage('ChatGPT', data.reply || 'No reply', 'assistant');
+        appendMessage('Chatbot', data.reply || 'No reply', 'assistant');
     } catch (error) {
         console.error('Fetch error:', error);
     } finally {
         spinner.style.display = 'none';
     }
 }
+
 
 document.getElementById('user-input').addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
@@ -103,11 +104,12 @@ document.getElementById('chat-container').addEventListener('click', () => {
     }
 });
 
+// Modify the existing `appendMessage` function if needed
 function appendMessage(sender, message, type) {
     const chatBox = document.getElementById('chat-box');
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${type}`;
-
+    
     const logoDiv = document.createElement('div');
     logoDiv.className = 'message-logo';
 
@@ -119,8 +121,8 @@ function appendMessage(sender, message, type) {
         profileLogo.src = '../static/images/p1.avif'; // Replace with the actual path to the user's logo image
         profileLogo.alt = 'User Logo';
     } else {
-        profileLogo.src = '../static/images/c1.jpg'; // Replace with the actual path to the robot's logo image
-        profileLogo.alt = 'Robot Logo';
+        profileLogo.src = '../static/images/c1.jpg'; // Replace with the actual path to the chatbot's logo image
+        profileLogo.alt = 'Chatbot Logo';
     }
 
     logoDiv.appendChild(profileLogo);
