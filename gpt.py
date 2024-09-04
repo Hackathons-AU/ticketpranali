@@ -45,6 +45,7 @@ def index():
 @app.route('/test')
 def test():
     return render_template('test.html')
+
 @app.route('/get-total-cost')
 def get_total_cost():
     total_cost = session.get('totalCost', 0)
@@ -55,7 +56,6 @@ def pay():
     total_cost = session.get('totalCost', 0)
     print(f"Total cost in /pay route: {total_cost}")  # Debugging line
     return render_template('pay.html')
-
 
 def process_main_chatbot(user_input):
     conversation_history.append({"role": "user", "content": user_input})
@@ -71,6 +71,7 @@ def process_main_chatbot(user_input):
         "reply": response,
         "tokens_used": tokens_used
     })
+
 @app.route('/chat', methods=['POST'])
 def chat():
     data = request.get_json()
@@ -78,14 +79,15 @@ def chat():
 
     if not user_input:
         return jsonify({"reply": "No message provided"}), 400
-    
+
     # Initialize chatbot mode if not set
     if 'chatbot_mode' not in session:
         session['chatbot_mode'] = 'alternate_chatbot'
-    
+
     # Check activation keywords
-    for keyword, mode in ACTIVATION_KEYWORDS.items():
-        if keyword.lower() in user_input.lower():
+    if user_input.lower().startswith('switch'):
+        mode = user_input.split(' ')[1]
+        if mode in ['main_chatbot', 'alternate_chatbot']:
             session['chatbot_mode'] = mode
             response = f"Switched to {mode.replace('_', ' ')} mode."
             return jsonify({"reply": response})
@@ -97,6 +99,16 @@ def chat():
         return jsonify({
             "reply": handle_booking_chatbot(user_input)
         })
+
+@app.route('/set-chatbot-mode', methods=['POST'])
+def set_chatbot_mode():
+    data = request.get_json()
+    mode = data.get('mode')
+    
+    if mode in ['main_chatbot', 'alternate_chatbot']:
+        session['chatbot_mode'] = mode
+        return jsonify({"success": True}), 200
+    return jsonify({"success": False}), 400
 
 def handle_booking_chatbot(user_input):
     global booking_data
@@ -207,27 +219,13 @@ def handle_booking_chatbot(user_input):
         response_message = f"Your total cost is {booking_data['total_cost']:.2f}. Please provide your contact information (email or mobile number)."
     elif current_step == 8:
         contact_info = user_input
-        response_message = f"Thank you! Your booking is confirmed. A confirmation will be sent to {contact_info}."
-        booking_data = {}  # Clear booking data after confirmation
-        session.pop('totalCost', None)  # Clear totalCost from session
-
+        response_message = (
+            f"Thank you! Your booking is confirmed. A confirmation will be sent to {contact_info}. "
+            f'<button id="setAmountButton">Set Amount and Go to Form</button>'
+        )
     booking_data['current_step'] = current_step + 1 
     recalculate_cost()
     return response_message
-
-def get_step_prompt(step_number):
-    prompts = {
-        1: "Please provide the language you prefer.",
-        2: "Please provide the size of your group.",
-        3: "Please provide the ages of the people in your group.",
-        4: "Do you require a tour guide?",
-        5: "Please provide the nationalities of your group.",
-        6: "Please provide the date and timeslot you wish to visit.",
-        7: "Your total cost is calculated. Please provide your contact information.",
-        8: "Thank you! Your booking is complete."
-    }
-    return prompts.get(step_number, "Invalid step.")
-
 
 def get_step_prompt(step_number):
     prompts = {

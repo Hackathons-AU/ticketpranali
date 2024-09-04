@@ -13,10 +13,16 @@
                                     <button id="minimize-button"><i class="fas fa-minus"></i></button>
                                 </div>
                                 <div id="chat-box">
-                                    <!-- Messages will be appended here -->
+                                    <!-- Messages will be appended here --><div id="chatbot-response"></div>
                                     <div id="loading-spinner" class="spinner"></div>
                                 </div>
-                                
+                                <div id="chat-controls">
+        <!-- Add these buttons inside your HTML -->
+<button id="main-chatbot-button" class="chatbot-mode-button">Museum Information</button>
+<button id="alternate-chatbot-button" class="chatbot-mode-button">Ticket Booker</button>
+
+    </div>
+
                                 <div style="display: flex; align-items: center; padding: 10px;">
                                     <input type="text" id="user-input" placeholder="Type your message...">
                                     <button id="send-button"><i class="fas fa-paper-plane"></i> Send</button>
@@ -60,7 +66,7 @@
 }
 
 // Call updateTotalCost periodically
-setInterval(updateTotalCost, 1000); // Update every 5 seconds
+setInterval(updateTotalCost, 3000); // Update every 5 seconds
 
 </script>
 

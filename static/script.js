@@ -14,6 +14,40 @@ function closeInfo(id) {
 }
 
 let isMinimized = false;
+// Function to set the chatbot mode
+let currentChatbotMode = 'alternate_chatbot'; // Default mode
+
+function setChatbotMode(mode) {
+    fetch('/set-chatbot-mode', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ mode: mode })
+    }).then(response => {
+        if (response.ok) {
+            // Update button states
+            document.getElementById('main-chatbot-button').disabled = (mode === 'main_chatbot');
+            document.getElementById('alternate-chatbot-button').disabled = (mode === 'alternate_chatbot');
+            currentChatbotMode = mode; // Update the current mode
+        } else {
+            console.error('Failed to switch chatbot mode');
+        }
+    }).catch(error => {
+        console.error('Fetch error:', error);
+    });
+}
+
+
+// Event listeners for the buttons
+document.getElementById('main-chatbot-button').addEventListener('click', () => {
+    setChatbotMode('main_chatbot');
+});
+
+document.getElementById('alternate-chatbot-button').addEventListener('click', () => {
+    setChatbotMode('alternate_chatbot');
+});
+
 
 async function sendMessage({ message = null } = {}) {
     const userInput = message || document.getElementById('user-input').value.trim();
@@ -135,7 +169,12 @@ function appendMessage(sender, message, type) {
 
     const messageContent = document.createElement('div');
     messageContent.className = 'message-content';
-    messageContent.textContent = `${sender}: ${message}`;
+    messageContent.innerHTML = `${sender}: ${message}`; // Use innerHTML to include HTML elements
+
+    // Add specific content for step 8
+    if (type === 'booking' && message.includes('step-8-content')) {
+        messageContent.innerHTML += '<button id="setAmountButton">Set Amount and Go to Form</button>';
+    }
 
     messageDiv.appendChild(logoDiv);
     messageDiv.appendChild(messageContent);
@@ -146,11 +185,20 @@ function appendMessage(sender, message, type) {
         backButton.textContent = 'Back';
         backButton.className = 'back-button';
         backButton.addEventListener('click', () => {
-            sendMessage({ message: 'back' }); // Handle back navigation
+            if (currentChatbotMode === 'alternate_chatbot') {
+                sendMessage({ message: 'back' }); // Handle back navigation
+            }
         });
-        
+
         // Store the back button reference
         currentBackButton = backButton;
+
+        // Hide the back button if in main chatbot mode
+        if (currentChatbotMode === 'main_chatbot') {
+            backButton.style.display = 'none';
+        } else {
+            backButton.style.display = 'block'; // Ensure it's visible in alternate mode
+        }
 
         messageDiv.appendChild(backButton);
     }
@@ -159,6 +207,17 @@ function appendMessage(sender, message, type) {
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 
+// Event listener for the "Set Amount" button
+document.addEventListener('click', function(event) {
+    if (event.target && event.target.id === 'setAmountButton') {
+        const amountElement = document.getElementById('total-cost');
+        const amount = amountElement ? parseFloat(amountElement.textContent.replace('Total cost: $', '')) : 0;
+        
+        localStorage.setItem('amount', String(amount));
+        
+        window.location.href = 'pay'; // Redirect to payment form
+    }
+});
 // Ensure only one back button is visible
 function clearBackButton() {
     if (currentBackButton) {

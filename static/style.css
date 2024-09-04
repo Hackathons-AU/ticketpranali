@@ -43,6 +43,48 @@ body {
     margin-top: 15px; /* Extra space if needed */
     align-self: center; /* Center the button inside the message div */
 }
+/* Style for chatbot mode buttons */
+.chatbot-mode-button {
+    margin-right: 5px; /* Adjust spacing as needed */
+    margin-left: 20px; /* Negative value to move left */
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.chatbot-mode-button:disabled {
+    background-color: #6c757d; /* Grey background for disabled button */
+    cursor: not-allowed;
+}
+
+/* Button hover effect */
+#setAmountButton:hover {
+    background-color: #0056b3; /* Darker background color on hover */
+}
+
+/* Specific styles for setAmountButton */
+#setAmountButton {
+    margin-top: 10px; /* Add margin above the button */
+    font-family: Arial, sans-serif; /* Set font */
+    font-size: 14px; /* Adjust font size */
+    color: #fff; /* Text color */
+    background-color: #007bff; /* Button background color */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 20px; /* Padding around the text */
+    cursor: pointer; /* Show pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth background color transition */
+padding: 10px;
+    border-radius: 10px;
+}
+
+/* Optional: Style for messages with buttons */
+.message.booking .message-content {
+    margin-bottom: 10px; /* Add margin below messages containing buttons */
+}
 
 .nav-hd{
     color: white !important;
