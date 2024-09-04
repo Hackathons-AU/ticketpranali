@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Razorpay Tutorial</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='pay.css') }}">
+</head>
+<body>
+    <div class="wrapper">
+        <h2 class="sub-head" data-item="help us">Payment</h2>
+        <br>
+        <form id="payment-form">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Name*" required>
+            <br>
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" placeholder="Phone Number*" required>
+            <br>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Email*" required>
+            <br>
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" name="amount" placeholder="Amount*" disabled>
+            <br>
+            <button class="btn" type="submit">Pay Now</button>
+        </form>
+    </div>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Retrieve the amount from localStorage
+        const storedAmount = localStorage.getItem('amount');
+        if (storedAmount) {
+            // Set the amount in the input field
+            document.getElementById('amount').value = storedAmount;
+            // Optionally clear the stored amount
+            localStorage.removeItem('amount');
+        }
+    });
+</script>
+<script src="{{ url_for('static', filename='pay.js') }}"></script>   
+</body>
+</html>

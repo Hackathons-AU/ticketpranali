@@ -16,6 +16,7 @@
                                     <!-- Messages will be appended here -->
                                     <div id="loading-spinner" class="spinner"></div>
                                 </div>
+                                
                                 <div style="display: flex; align-items: center; padding: 10px;">
                                     <input type="text" id="user-input" placeholder="Type your message...">
                                     <button id="send-button"><i class="fas fa-paper-plane"></i> Send</button>
@@ -24,5 +25,44 @@
                         </div>
                     </div>
                 </div>
-           
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function setAmount() {
+            // Access the total_cost value from the server-side
+            const amountElement = document.getElementById('total-cost');
+            const amount = amountElement ? parseFloat(amountElement.textContent) : 0;
+
+            // Debugging: check the value in the console
+            console.log('Amount:', amount);
+
+            // Ensure amount is converted to a string (if necessary)
+            localStorage.setItem('amount', String(amount));
+
+            // Redirect to the form page
+            window.location.href = 'pay'; 
+        }
+
+        // Attach the function to the button click event
+        document.getElementById('setAmountButton').addEventListener('click', setAmount);
+    });
+    
+    
+    function updateTotalCost() {
+    fetch('/get-total-cost')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('total-cost').textContent = `${data.total_cost}`;
+        })
+        .catch(error => console.error('Error fetching total cost:', error));
+}
+
+// Call updateTotalCost periodically
+setInterval(updateTotalCost, 1000); // Update every 5 seconds
+
+</script>
+
+
 {% endblock %}

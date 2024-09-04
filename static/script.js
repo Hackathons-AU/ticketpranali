@@ -15,13 +15,14 @@ function closeInfo(id) {
 
 let isMinimized = false;
 
-// Function to handle sending the message
-async function sendMessage() {
-    const userInput = document.getElementById('user-input').value.trim();
-    if (userInput === '') return;
+async function sendMessage({ message = null } = {}) {
+    const userInput = message || document.getElementById('user-input').value.trim();
+    if (userInput === '' && !message) return;
 
-    appendMessage('You', userInput, 'user');
-    document.getElementById('user-input').value = '';
+    if (!message) {
+        appendMessage('You', userInput, 'user');
+        document.getElementById('user-input').value = '';
+    }
 
     const spinner = document.getElementById('loading-spinner');
     spinner.style.display = 'block';
@@ -41,14 +42,13 @@ async function sendMessage() {
         }
 
         const data = await response.json();
-        appendMessage('Chatbot', data.reply || 'No reply', 'assistant');
+        appendMessage('Chatbot', data.reply || 'No reply', 'booking');
     } catch (error) {
         console.error('Fetch error:', error);
     } finally {
         spinner.style.display = 'none';
     }
 }
-
 
 document.getElementById('user-input').addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
@@ -104,9 +104,16 @@ document.getElementById('chat-container').addEventListener('click', () => {
     }
 });
 
-// Modify the existing `appendMessage` function if needed
+let currentBackButton = null; // Keep track of the current back button
+
 function appendMessage(sender, message, type) {
     const chatBox = document.getElementById('chat-box');
+    
+    // Remove the previous back button if it exists
+    if (currentBackButton) {
+        currentBackButton.style.display = 'none';
+    }
+    
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${type}`;
     
@@ -116,12 +123,11 @@ function appendMessage(sender, message, type) {
     const profileLogo = document.createElement('img');
     profileLogo.className = 'profile-logo';
 
-    // Set the logo based on the message sender
     if (type === 'user') {
-        profileLogo.src = '../static/images/p1.avif'; // Replace with the actual path to the user's logo image
+        profileLogo.src = '../static/images/p1.avif'; // Replace with actual path
         profileLogo.alt = 'User Logo';
     } else {
-        profileLogo.src = '../static/images/c1.jpg'; // Replace with the actual path to the chatbot's logo image
+        profileLogo.src = '../static/images/c1.jpg'; // Replace with actual path
         profileLogo.alt = 'Chatbot Logo';
     }
 
@@ -133,8 +139,31 @@ function appendMessage(sender, message, type) {
 
     messageDiv.appendChild(logoDiv);
     messageDiv.appendChild(messageContent);
+
+    // Add Back button for booking chatbot messages
+    if (type === 'booking') {
+        const backButton = document.createElement('button');
+        backButton.textContent = 'Back';
+        backButton.className = 'back-button';
+        backButton.addEventListener('click', () => {
+            sendMessage({ message: 'back' }); // Handle back navigation
+        });
+        
+        // Store the back button reference
+        currentBackButton = backButton;
+
+        messageDiv.appendChild(backButton);
+    }
+
     chatBox.appendChild(messageDiv);
     chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// Ensure only one back button is visible
+function clearBackButton() {
+    if (currentBackButton) {
+        currentBackButton.style.display = 'none';
+    }
 }
 
 document.getElementById('chat-container').addEventListener('click', () => {
@@ -146,3 +175,4 @@ document.getElementById('chat-container').addEventListener('click', () => {
         isMinimized = false;
     }
 });
+

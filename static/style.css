@@ -17,6 +17,32 @@ body {
 .custom-navbar{
     background-color: #4bb2bf;
 }
+/* General styles for back button */
+.back-button {
+    background-color: #007bff; /* Background color matching the chat theme */
+    color: white; /* Text color for contrast */
+    border: none; /* Remove default border */
+    border-radius: 25px; /* Rounded corners */
+    padding: 10px 20px; /* Padding for size */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-top: 10px; /* Space above the button */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effects */
+    display: block; /* Ensure button is displayed as a block element */
+    text-align: center; /* Center text inside the button */
+}
+
+/* Hover effect */
+.back-button:hover {
+    background-color: #0056b3; /* Darker background on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect on hover */
+}
+
+/* Style for button inside chat messages */
+.message.booking .back-button {
+    margin-top: 15px; /* Extra space if needed */
+    align-self: center; /* Center the button inside the message div */
+}
 
 .nav-hd{
     color: white !important;
