@@ -26,6 +26,36 @@ ACTIVATION_KEYWORDS = {
     'museum': 'main_chatbot',
     'switch': 'alternate_chatbot'  # Keyword to switch to alternate chatbot
 }
+import datetime
+
+# Define museum hours (example: open every day from 9:00 AM to 5:00 PM)
+MUSEUM_OPENING_HOUR = datetime.time(9, 0)
+MUSEUM_CLOSING_HOUR = datetime.time(17, 0)
+
+def is_museum_open(date, time):
+    """
+    Check if the museum is open at the given date and time.
+    
+    Parameters:
+    - date (datetime.date): The date to check.
+    - time (datetime.time): The time to check.
+
+    Returns:
+    - bool: True if the museum is open, False otherwise.
+    """
+    # Check if the museum is closed on certain dates (e.g., public holidays)
+    closed_dates = [
+        datetime.date(2024, 12, 25),  # Example: Closed on December 25th
+    ]
+    
+    if date in closed_dates:
+        return False
+    
+    # Check if the time is within the opening hours
+    if MUSEUM_OPENING_HOUR <= time <= MUSEUM_CLOSING_HOUR:
+        return True
+    
+    return False
 
 DATA_FILE_PATH = 'e.txt'
 
