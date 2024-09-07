@@ -2,11 +2,11 @@
         $(document).ready(function() {
             $("#payment-form").submit(function(e) {
                 e.preventDefault(); // Prevent default form submission
-
+const storedAmount = localStorage.getItem('amount');
                 var name = $("#payment-form input[name='name']").val();
                 var phone = $("#payment-form input[name='phone']").val();
                 var email = $("#payment-form input[name='email']").val();
-                var amount = $("#payment-form input[name='amount']").val();
+                var amount = parseFloat(storedAmount)
 
                 if (name != "" && phone != "" && email != "" && amount != "") {
                     // Replace 'YOUR_API_KEY' with your actual Razorpay API key
