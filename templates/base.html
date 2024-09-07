@@ -14,9 +14,11 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </head>
 <body>
+
     <div id="home">
-        <nav class="navbar navbar-expand-lg navbar-dark custom-navbar ">
-            <a class="navbar-brand nav-lg d-flex flex-row" href="#aboutme"> 
+        <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+            <div class="d-flex flex-row justify-content-center ml-auto mr-auto">
+            <a class="navbar-brand nav-lg d-flex flex-row nli" href="#aboutme"> 
                 <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="navbarimg" alt="Logo" />
             <h1 class="navhead ml-2 mt-auto mb-auto"> Ticket Pranali  </h1>
             </a>
@@ -24,22 +26,23 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav ml-auto">
+                <div class="navbar-nav nlc">
                     <a class="nav-link active nav-hd" href="#home"> Home </a>
+                    <a class="nav-link nav-hd" href="#aboutus"> About Us </a>
                     <a class="nav-link nav-hd" href="#faq"> FAQ's </a>
-                    <a class="nav-link nav-hd" href="#services"> Blogs </a>
                     <a class="nav-link nav-hd" href="#info">  Contact Us </a>
                     <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle nav-hd" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a id="lan" class="nav-link dropdown-toggle nav-hd" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Language
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#" data-lang="en">English</a>
-                            <a class="dropdown-item" href="#" data-lang="te">Telugu</a>
-                            <a class="dropdown-item" href="#" data-lang="hi">Hindi</a>
+                        <div id="customdrop" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item text-white dh" href="#" data-lang="en">English</a>
+                            <a class="dropdown-item text-white dh" href="#" data-lang="te">Telugu</a>
+                            <a class="dropdown-item text-white dh" href="#" data-lang="hi">Hindi</a>
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
         </nav>
     </div>
@@ -49,7 +52,7 @@
             <div class="col-12">
 
                 <div id="first-sec">
-                    <div class="container mt-5 mb-3">
+                    <div class="container mt-3 mb-3">
                         <div class="row">
                             <div class="col-12">
                                 <h1 id="welcome" class="top-head"> Welcome to Ticket Pranali </h1>
@@ -58,7 +61,7 @@
                     </div>
                 </div>
 
-                <main>
+    <main>
         {% block content %}
         <!-- Default content can go here -->
         {% endblock %}
@@ -125,21 +128,21 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-6 d-flex flex-column justify-content-md-center mb-5 order-2 order-md-2">
-                    <h1 class="a-head mb-4"> Why You should Use Our App: </h1>
-                    <p class="a-para"> Our website offers a seamless and hassle-free experience for booking tickets to museums across India. Here’s why you should choose us:                    </p>
-                    <p class="a-para"> <span class="a-span">1. Convenience and Flexibility: </span> 
+                    <h1 id="about_heading" class="a-head mb-4"> Why You should Use Our App: </h1>
+                    <p id="about_paragraph" class="a-para"> Our website offers a seamless and hassle-free experience for booking tickets to museums across India. Here’s why you should choose us:                    </p>
+                    <p id="ap1" class="a-para"> <span class="a-span">1. Convenience and Flexibility: </span> 
                     Book your tickets anytime, anywhere, from the comfort of your home or on the go. Our user-friendly interface ensures a smooth and quick booking process.
                     </p>
                 </div>
 
                 <div class="col-12 col-md-6 d-flex flex-column justify-content-md-center mb-5 order-4 order-md-3">
-                    <p class="a-para"> <span class="a-span">2. Wide Selection of Museums: </span> 
+                    <p id="ap2" class="a-para"> <span class="a-span">2. Wide Selection of Museums: </span> 
                         We partner with a diverse range of museums across India, offering you access to popular destinations and hidden gems alike.
                     </p>
-                    <p class="a-para"> <span class="a-span">3. Real-Time Availability: </span> 
+                    <p id="ap3" class="a-para"> <span class="a-span">3. Real-Time Availability: </span> 
                         Our platform provides up-to-date information on ticket availability, ensuring you get your preferred time slots without any surprises.                        
                     </p>
-                    <p class="a-para"> <span class="a-span">4. Secure Payments:  </span> 
+                    <p id="ap4" class="a-para"> <span class="a-span">4. Secure Payments:  </span> 
                         Your transactions are safe with us. We use advanced encryption technology to protect your payment information.                    </p>
                 </div>
 
@@ -156,15 +159,15 @@
                 </div>
 
                 <div class="col-12 col-md-6 d-flex flex-column justify-content-md-center order-6 order-md-6">
-                    <p class="a-para"> <span class="a-span">5. Special Offers and Discounts:  </span> 
+                    <p id="ap5" class="a-para"> <span class="a-span">5. Special Offers and Discounts:  </span> 
                         Enjoy exclusive deals and discounts on museum tickets, making your visit more affordable.</p>
-                    <p class="a-para"> <span class="a-span">6. Skip the Queues: </span> 
+                    <p id="ap6" class="a-para"> <span class="a-span">6. Skip the Queues: </span> 
                         Save time by skipping the long queues at the ticket counters. With our e-tickets, you can walk straight into the museum.
                     </p>
-                    <p class="a-para"> <span class="a-span">7. Customer Support:  </span> 
+                    <p id="ap7" class="a-para"> <span class="a-span">7. Customer Support:  </span> 
                         Our dedicated customer support team is available to assist you with any queries or issues, ensuring a smooth experience from start to finish.
                     </p>
-                    <p class="a-para" style="font-weight: 700;"> By choosing our website, you’re not just booking a ticket—you’re securing a memorable and enriching experience at some of India’s finest museums.</p>
+                    <p id="ap8" class="a-para" style="font-weight: 700;"> By choosing our website, you’re not just booking a ticket—you’re securing a memorable and enriching experience at some of India’s finest museums.</p>
                     
                 </div>
 
@@ -179,64 +182,250 @@
                     <div class="faq-box shadow-lg ml-auto mr-auto">
                     <h1 class="mb-4 text-primary text-center">FAQs (Frequently Asked Questions)</h1>
                     <div id="accordionExample">
-                                    <div class="card crd mb-2 shadow">
-                                        <div class="card-header" id="headingOne">
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="headingOne">
+                                <h5 class="mb-0">
+                                    <button id="fq1" class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        How do I book a ticket using the chatbot?
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                <div id="fq2" class="card-body">
+                                    <strong>To book a ticket, simply start a conversation with the chatbot on our website. </strong> The chatbot will guide you through the steps, including selecting a museum or heritage site, choosing a time slot, and making the payment. Once your booking is confirmed, you will receive a unique ticket ID.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="headingTwo">
                                             <h5 class="mb-0">
-                                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                    Accordion Item #1
+                                                <button id="fq3" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                    Can I choose my preferred time slot?
                                                 </button>
                                             </h5>
-                                        </div>
-                                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 shadow">
-                                        <div class="card-header" id="headingTwo">
-                                            <h5 class="mb-0">
-                                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                    Accordion Item #2
-                                                </button>
-                                            </h5>
-                                        </div>
-                                        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-2 shadow">
-                                        <div class="card-header" id="headingThree">
-                                            <h5 class="mb-0">
-                                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                    Accordion Item #3
-                                                </button>
-                                            </h5>
-                                        </div>
-                                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
-                                            <div class="card-body">
-                                                <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                                            </div>
-                                        </div>
-                                    </div>
+                            </div>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                                <div id="fq4" class="card-body">
+                                    <strong>Yes, you can select your preferred time slot based on availability.</strong> The chatbot will show you all available slots for the date you wish to visit, allowing you to pick the most convenient time for you.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="headingThree">
+                                <h5 class="mb-0">
+                                    <button id="fq5" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                        What if I need to reschedule my visit?
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                                <div id="fq6" class="card-body">
+                                     <strong>You can easily reschedule your visit through the chatbot. Just provide your ticket ID, and the chatbot will show you the available time slots for rescheduling.</strong> Choose a new slot that suits you, and your booking will be updated accordingly.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="heading4">
+                                <h5 class="mb-0">
+                                    <button id="fq7" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                                        What happens if I miss my time slot?
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse4" class="collapse" aria-labelledby="heading4" data-parent="#accordionExample">
+                                <div id="fq8" class="card-body">
+                                    If you miss your time slot, please contact our support team through the chatbot or via our customer service contact details. We will do our best to accommodate you in the next available slot, subject to availability.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="heading5">
+                                <h5 class="mb-0">
+                                    <button id="fq9" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                                        How does the ticket ID system work?
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse5" class="collapse" aria-labelledby="heading5" data-parent="#accordionExample">
+                                <div id="fq10" class="card-body">
+                                     <strong> After booking, you will receive a unique ticket ID.</strong> This ID serves as your entry pass and must be presented at the venue entrance at your designated time slot. The ID ensures a smooth entry process and helps us manage visitor flow effectively.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="heading6">
+                                <h5 class="mb-0">
+                                    <button id="fq11" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                                        Is the chatbot available in multiple languages?
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse6" class="collapse" aria-labelledby="heading6" data-parent="#accordionExample">
+                                <div id="fq12" class="card-body">
+                                     <strong>Yes, our chatbot supports multiple languages to cater to a diverse audience.</strong> You can choose your preferred language at the start of your conversation with the chatbot.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="heading7">
+                                <h5 class="mb-0">
+                                    <button id="fq13" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+                                        Are there any additional charges for using the chatbot booking service?
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse7" class="collapse" aria-labelledby="heading7" data-parent="#accordionExample">
+                                <div id="fq14" class="card-body">
+                                     <strong>No,</strong>there are no additional charges for using our chatbot booking service. You will only be charged the ticket price for the selected museum or heritage site.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="heading8">
+                                <h5 class="mb-0">
+                                    <button id="fq15" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
+                                        What payment methods are accepted for booking tickets?
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse8" class="collapse" aria-labelledby="heading8" data-parent="#accordionExample">
+                                <div id="fq16" class="card-body">
+                                     <strong>We accept various payment methods, including credit cards, debit cards, and digital wallets.</strong> The chatbot will guide you through the payment process securely.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="heading9">
+                                <h5 class="mb-0">
+                                    <button id="fq17" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
+                                        Can I book tickets for multiple museums or sites in one transaction?
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse9" class="collapse" aria-labelledby="heading9" data-parent="#accordionExample">
+                                <div id="fq18" class="card-body">
+                                     <strong> Yes,</strong>you can book tickets for multiple museums or sites in one transaction. The chatbot will allow you to select different museums or sites and add them to your cart before proceeding to payment.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="heading10">
+                                <h5 class="mb-0">
+                                    <button id="fq19" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
+                                        How is my personal information protected?
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse10" class="collapse" aria-labelledby="heading10" data-parent="#accordionExample">
+                                <div id="fq20" class="card-body">
+                                     <strong> We take your privacy and security seriously.</strong>  All personal information and payment details are encrypted and securely stored. We comply with data protection regulations to ensure your information is safe.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="heading11">
+                                <h5 class="mb-0">
+                                    <button id="fq21" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse11" aria-expanded="false" aria-controls="collapse11">
+                                        What should I do if I encounter a problem with the chatbot?
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse11" class="collapse" aria-labelledby="heading11" data-parent="#accordionExample">
+                                <div id="fq22" class="card-body">
+                                    If you encounter any issues while using the chatbot, please reach out to our customer support team through the contact details provided on our website. We are here to assist you and ensure a smooth booking experience.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="heading12">
+                                <h5 class="mb-0">
+                                    <button id="fq23" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse12" aria-expanded="false" aria-controls="collapse12">
+                                        Can I cancel my booking and get a refund?
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse12" class="collapse" aria-labelledby="heading12" data-parent="#accordionExample">
+                                <div id="fq24" class="card-body">
+                                     <strong>Yes, </strong>you can cancel your booking through the chatbot or our customer service team. Refunds are processed based on our cancellation policy, which will be shared with you during the booking process.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="heading13">
+                                <h5 class="mb-0">
+                                    <button id="fq25" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse13" aria-expanded="false" aria-controls="collapse13">
+                                        Are group bookings available through the chatbot?
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse13" class="collapse" aria-labelledby="heading13" data-parent="#accordionExample">
+                                <div id="fq26" class="card-body">
+                                     <strong> Yes, </strong> our chatbot can handle group bookings. You can specify the number of visitors when making a reservation, and the chatbot will assist you in booking for the entire group.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="heading14">
+                                <h5 class="mb-0">
+                                    <button id="fq27" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse14" aria-expanded="false" aria-controls="collapse14">
+                                        Does the chatbot provide any recommendations or guides for my visit?
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse14" class="collapse" aria-labelledby="heading14" data-parent="#accordionExample">
+                                <div id="fq28" class="card-body">
+                                     <strong> Yes, </strong>our chatbot can provide personalized recommendations based on your interests and the museum or heritage site you are visiting. It can also offer guides and tips to enhance your experience.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mb-2 shadow">
+                            <div class="card-header" id="heading15">
+                                <h5 class="mb-0">
+                                    <button id="fq29" class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse15" aria-expanded="false" aria-controls="collapse15">
+                                        How do I access my tickets after booking?
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse15" class="collapse" aria-labelledby="heading15" data-parent="#accordionExample">
+                                <div id="fq30" class="card-body">
+                                     <strong> After booking, your tickets and unique ticket ID will be sent to you via email or SMS.</strong> You can also access your booking details through the chatbot by providing your email or phone number used during booking.
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 </div>
             </div>
         </div>
     </div>
-               <p id="total-cost" STYLE ="display: none;">Total cost: $0</p>
+
+    <p id="total-cost" STYLE ="display: none;">Total cost: $0</p>
+
     <footer id="info" class="footer bg-dark text-white text-start mt-auto">
         <div class="container pt-4 pl-3">
             <div class="row ms-auto me-auto">
                 <div class="col-md-4 col-xs-12 d-flex flex-row justify-content-md-center justify-content-xs-start mt-4">
                     <div class="text-start">
                         <a href="#bot" class="text-decoration-none">
-                            <h4 class="mb-2 f-cmn"> Ticket Pranali </h4>
+                            <h4 id="ft1" class="mb-2 f-cmn"> Ticket Pranali </h4>
                         </a>
-                        <p class="f-cmn">Book Your Tickets To Experience <br/> the India's Wonderful Museums </p>
+                        <p class="f-cmn"> <span id="ft2"> Book Your Tickets To Experience </span> <br/> <span id="ft12"> the India's Wonderful Museums </span> </p>
                         <div class="d-flex flex-row mt-4">
                             <a href="https://facebook.com" target="_blank" class="mr-4 font-imgs">
                                 <i class="fab fa-facebook-square font"></i>
@@ -252,24 +441,26 @@
                 </div>
                 <div class="col-md-4 col-xs-12 d-flex flex-row justify-content-md-center justify-content-xs-start mt-4">
                     <div class="text-start">
-                        <h5 class="mb-2">Main Links</h5>
-                        <a href="/faq" class="text-decoration-none f-cmn">FAQ</a><br/>
-                        <a href="/blog" class="text-decoration-none lnk f-cmn">Blog</a><br/>
-                        <a href="/testimonials" class="text-decoration-none f-cmn">Testimonials</a>
+                        <h5 class="mb-2" id="ft3">Main Links</h5>
+                        <a href="/faq" id="ft4" class="text-decoration-none f-cmn">FAQ</a><br/>
+                        <a href="/blog" id="ft5" class="text-decoration-none lnk f-cmn">Blog</a><br/>
+                        <a href="/testimonials" id="ft6" class="text-decoration-none f-cmn">Testimonials</a>
                     </div>
                 </div>
                 <div class="col-md-4 col-xs-12 d-flex flex-row justify-content-md-center justify-content-xs-start mt-4">
                     <div class="text-start">
-                        <h5 class="mb-2">Contact Us</h5>
+                        <h5 class="mb-2" id="ft7">Contact Us</h5>
                         <p class="mb-2">
-                            <i class="fas fa-envelope mr-2 font-imgs"></i>Email: info@ticketpranali.com
+                            <i class="fas fa-envelope mr-2 font-imgs"></i> <span id="ft8">Email: info@ticketpranali.com</span>
                         </p>
                         <p class="mb-2">
-                            <i class="fas fa-phone mr-2 font-imgs"></i>Phone: 99999999999
+                            <i class="fas fa-phone mr-2 font-imgs"></i> <span id="ft9"> Phone: 99999999999</span>
                         </p>
                         <p class="mb-2">
                             <i class="fas fa-location-dot mr-2 font-imgs"></i>
+                            <span id="ft10">
                             GITAM Medical College, Road,<br/> Yendada, Rushikonda, Visakhapatnam,<br/> Andhra Pradesh 530045
+                            </span>
                         </p>
                     </div>
                 </div>
@@ -278,12 +469,14 @@
     
             <div class="row mt-3">
                 <div class="col-md-12 text-center">
-                    <p>&copy; <script>document.write(new Date().getFullYear());</script> Ticket Pranali. All Rights Reserved.</p>
+                    <p id="ft11">&copy; <script>document.write(new Date().getFullYear());</script> Ticket Pranali. All Rights Reserved.</p>
                 </div>
             </div>
         </div>
     </footer>
     
-<script src="{{ url_for('static', filename='script.js') }}"></script>   
+<script src="{{ url_for('static', filename='script.js') }}"></script>  
+
 </body>
+
 </html>

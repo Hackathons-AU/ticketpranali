@@ -4,6 +4,7 @@ body {
     background-size: cover;
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
 }
 
 .top-head{
@@ -17,42 +18,42 @@ body {
 .custom-navbar{
     background-color: #4bb2bf;
 }
-/* General styles for back button */
+
 .back-button {
-    background-color: #007bff; /* Background color matching the chat theme */
-    color: white; /* Text color for contrast */
-    border: none; /* Remove default border */
-    border-radius: 25px; /* Rounded corners */
-    padding: 10px 20px; /* Padding for size */
-    font-size: 16px; /* Font size */
-    cursor: pointer; /* Pointer cursor on hover */
-    margin-top: 10px; /* Space above the button */
-    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effects */
-    display: block; /* Ensure button is displayed as a block element */
-    text-align: center; /* Center text inside the button */
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px; 
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    display: block; 
+    text-align: center; 
 }
 
-/* Hover effect */
+
 .back-button:hover {
-    background-color: #0056b3; /* Darker background on hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect on hover */
+    background-color: #0056b3; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Style for button inside chat messages */
 .message.booking .back-button {
-    margin-top: 15px; /* Extra space if needed */
-    align-self: center; /* Center the button inside the message div */
+    margin-top: 15px;
+    align-self: center;
 }
-/* Style for chatbot mode buttons */
+
 .chatbot-mode-button {
-    margin-right: 5px; /* Adjust spacing as needed */
-    margin-left: 20px; /* Negative value to move left */
+    margin-right: 5px;
+    margin-left: 20px;
     padding: 10px;
     border: none;
     background-color: #007bff;
     color: white;
     cursor: pointer;
     border-radius: 10px;
+    position: relative !important;
 }
 
 .chatbot-mode-button:disabled {
@@ -67,17 +68,17 @@ body {
 
 /* Specific styles for setAmountButton */
 #setAmountButton {
-    margin-top: 10px; /* Add margin above the button */
-    font-family: Arial, sans-serif; /* Set font */
-    font-size: 14px; /* Adjust font size */
-    color: #fff; /* Text color */
-    background-color: #007bff; /* Button background color */
-    border: none; /* Remove default border */
-    border-radius: 5px; /* Rounded corners */
-    padding: 10px 20px; /* Padding around the text */
-    cursor: pointer; /* Show pointer cursor on hover */
+    margin-top: 10px; 
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px; 
+    padding: 10px 20px; 
+    cursor: pointer; 
     transition: background-color 0.3s; /* Smooth background color transition */
-padding: 10px;
+    padding: 10px;
     border-radius: 10px;
 }
 
@@ -98,6 +99,19 @@ padding: 10px;
     font-size: 25px;
     font-family: "Roboto";
 }
+
+#customdrop {
+    min-width: 100px;
+    max-width: 150px; 
+    width: auto;
+    z-index: 1000;
+    background-color: #4bb2bf;
+}
+
+.dh:hover{
+    color: #000 !important;
+}
+
 
 .navbarimg{
     height: 50px;
@@ -236,12 +250,6 @@ left: 1100px; /* Adjust as needed */
     width: 100%;
 }
 
-.crd{
-    border-style: solid;
-    border-width: 20px;
-    border-color: #007bff;
-}
-
 .f-cmn{
     color: #fff;
 }
@@ -350,7 +358,7 @@ left: 1100px; /* Adjust as needed */
     background-repeat: no-repeat;
     background-position: center;
     position:  absolute;
-    z-index: 1000;
+    z-index: 999;
     width: 100%;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -467,10 +475,24 @@ left: 1100px; /* Adjust as needed */
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-/* 
+
 @media (max-width:991px){
-    #chat-container{
-        position: relative;
-        z-index: 1000;
+    .nli{
+        margin-right: 0px !important;
     }
-} */
+
+    .nlc{
+        margin-left: 0px !important;
+    }
+    
+}
+
+@media (min-width:992px) {
+    .nli{
+        margin-right: 200px !important;
+    }
+
+    .nlc{
+        margin-left: 150px !important;
+    }
+}

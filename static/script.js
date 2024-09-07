@@ -1,3 +1,122 @@
+document.addEventListener('DOMContentLoaded', () => {
+    function changeLanguage(lang) {
+        console.log(`Changing language to: ${lang}`); // Debugging line
+
+        fetch('http://localhost:8080/content')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Data fetched:', data); // Debugging line
+
+                // Access the specific language data directly
+                const langData = data[lang];
+                if (!langData) {
+                    throw new Error(`Language data for "${lang}" not found.`);
+                }
+
+                // Update the text content of the elements
+                document.getElementById('welcome').textContent = langData.welcome || 'Welcome';
+                document.getElementById('about_heading').textContent = langData.about_heading || 'About';
+                document.getElementById('about_paragraph').textContent = langData.about_paragraph || 'About paragraph';
+                document.querySelector('a[href="#home"]').textContent = langData.home;
+                document.querySelector('a[href="#aboutus"]').textContent = langData.aboutus;
+                document.querySelector('a[href="#faq"]').textContent = langData.faq;
+                document.querySelector('a[href="#info"]').textContent = langData.contactus;
+                document.getElementById('lan').textContent = langData.lan;
+
+                document.querySelector('.navhead').textContent = langData.head;
+                document.getElementById('ap1').textContent = langData.ap1;
+                document.getElementById('ap2').textContent = langData.ap2;
+                document.getElementById('ap3').textContent = langData.ap3;
+                document.getElementById('ap4').textContent = langData.ap4;
+                document.getElementById('ap5').textContent = langData.ap5;
+                document.getElementById('ap6').textContent = langData.ap6;
+                document.getElementById('ap7').textContent = langData.ap7;
+                document.getElementById('ap8').textContent = langData.ap8;
+
+                document.getElementById('fq1').textContent = langData.fq1;
+                document.getElementById('fq2').textContent = langData.fq2;
+                document.getElementById('fq3').textContent = langData.fq3;
+                document.getElementById('fq4').textContent = langData.fq4;
+                document.getElementById('fq5').textContent = langData.fq5;
+                document.getElementById('fq6').textContent = langData.fq6;
+                document.getElementById('fq7').textContent = langData.fq7;
+                document.getElementById('fq8').textContent = langData.fq8;
+                document.getElementById('fq9').textContent = langData.fq9;
+                document.getElementById('fq10').textContent = langData.fq10;
+                document.getElementById('fq11').textContent = langData.fq11;
+                document.getElementById('fq12').textContent = langData.fq12;
+                document.getElementById('fq13').textContent = langData.fq13;
+                document.getElementById('fq14').textContent = langData.fq14;
+                document.getElementById('fq15').textContent = langData.fq15;
+                document.getElementById('fq16').textContent = langData.fq16;
+                document.getElementById('fq17').textContent = langData.fq17;
+                document.getElementById('fq18').textContent = langData.fq18;
+                document.getElementById('fq19').textContent = langData.fq19;
+                document.getElementById('fq20').textContent = langData.fq20;
+                document.getElementById('fq21').textContent = langData.fq21;
+                document.getElementById('fq22').textContent = langData.fq22;
+                document.getElementById('fq23').textContent = langData.fq23;
+                document.getElementById('fq24').textContent = langData.fq24;
+                document.getElementById('fq25').textContent = langData.fq25;
+                document.getElementById('fq26').textContent = langData.fq26;
+                document.getElementById('fq27').textContent = langData.fq27;
+                document.getElementById('fq28').textContent = langData.fq28;
+                document.getElementById('fq29').textContent = langData.fq29;
+                document.getElementById('fq30').textContent = langData.fq30;
+
+                document.getElementById('ft1').textContent = langData.ft1;
+                document.getElementById('ft2').textContent = langData.ft2;
+                document.getElementById('ft12').textContent = langData.ft12;
+                document.getElementById('ft3').textContent = langData.ft3;
+                document.getElementById('ft4').textContent = langData.ft4;
+                document.getElementById('ft5').textContent = langData.ft5;
+                document.getElementById('ft6').textContent = langData.ft6;
+                document.getElementById('ft7').textContent = langData.ft7;
+                document.getElementById('ft8').textContent = langData.ft8;
+                document.getElementById('ft9').textContent = langData.ft9;
+                document.getElementById('ft10').textContent = langData.ft10;
+                document.getElementById('ft11').textContent = langData.ft11;
+
+
+                console.log('Language change successful.'); // Debugging line
+            })
+            .catch(error => {
+                console.error('Error occurred:', error);
+            });
+    }
+
+    // Ensure the dropdown items exist before adding event listeners
+    const dropdownItems = document.querySelectorAll('.dropdown-item');   
+    if (dropdownItems.length > 0) {
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', function (e) {
+                e.preventDefault();
+                const selectedLang = this.getAttribute('data-lang');
+                console.log(`Language selected: ${selectedLang}`); // Debugging line
+                changeLanguage(selectedLang);
+            });
+        });
+    } else {
+        console.warn('No dropdown items found.');
+    }
+
+    // Ensure the elements exist before trying to set default language content
+    if (document.getElementById('welcome') && document.getElementById('about_heading') && document.getElementById('about_paragraph')) {
+        changeLanguage('en'); // Default to English on page load
+    } else {
+        console.warn('One or more elements not found for setting default language content.');
+    }
+});
+
+
+
+
+//----------------------------------------------------------------
 function showInfo(id) {
     // Hide all info boxes
     document.querySelectorAll('.info-box').forEach(box => {
@@ -100,10 +219,10 @@ isMinimized = false;
 
 document.getElementById('minimize-button').addEventListener('click', (event) => {
     event.stopPropagation(); // Prevents the event from bubbling up and expanding the chat container again
-
     const chatContainer = document.getElementById('chat-container');
     const welcome = document.getElementById('welcome');
     var map = document.getElementById('map');
+    const chatcntrl = document.getElementById('chat-controls');
 
     if (isMinimized) {
         // Expand the chat container
@@ -111,6 +230,11 @@ document.getElementById('minimize-button').addEventListener('click', (event) => 
         chatContainer.classList.remove('minimized-logo');
         document.getElementById('minimize-button').innerHTML = '<i class="fas fa-minus"></i>';
         isMinimized = false;
+
+        // Delay setting the display property to ensure the container is fully expanded
+        setTimeout(() => {
+            chatcntrl.style.display = "block";
+        }, 300); // Adjust delay if necessary
     } else {
         // Minimize the chat container
         chatContainer.classList.add('minimized');
@@ -118,6 +242,7 @@ document.getElementById('minimize-button').addEventListener('click', (event) => 
         isMinimized = true;
         welcome.textContent = " ";
         map.className = 'container-fluid';
+        chatcntrl.style.display = "none";
         map.scrollIntoView({ 
             behavior: 'smooth', // Smooth scrolling
             block: 'start' // Align to the top of the element (can be 'start', 'center', 'end', 'nearest')
@@ -129,14 +254,24 @@ document.getElementById('chat-container').addEventListener('click', () => {
     if (isMinimized) {
         // Expand the chat container when clicking the minimized logo
         const chatContainer = document.getElementById('chat-container');
+        const chatcntrl = document.getElementById('chat-controls');
+        const welcome = document.getElementById('welcome');
+        var map = document.getElementById('map');
         chatContainer.classList.remove('minimized');
         chatContainer.classList.remove('minimized-logo');
         document.getElementById('minimize-button').innerHTML = '<i class="fas fa-minus"></i>';
         isMinimized = false;
         welcome.textContent = "Welcome to Ticket Pranali";
         map.classList.replace('container-fluid', 'container');
+
+        // Delay setting the display property to ensure the container is fully expanded
+        setTimeout(() => {
+            chatcntrl.style.display = "block";
+        }, 300); // Adjust delay if necessary
     }
 });
+
+
 
 let currentBackButton = null; // Keep track of the current back button
 
