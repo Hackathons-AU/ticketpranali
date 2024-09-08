@@ -136,6 +136,9 @@ let isMinimized = false;
 // Function to set the chatbot mode
 let currentChatbotMode = 'alternate_chatbot'; // Default mode
 
+// Assume currentChatbotMode is defined globally and set based on server-side data or initial API call
+
+// Function to set the chatbot mode and display a response message
 function setChatbotMode(mode) {
     fetch('/set-chatbot-mode', {
         method: 'POST',
@@ -149,6 +152,10 @@ function setChatbotMode(mode) {
             document.getElementById('main-chatbot-button').disabled = (mode === 'main_chatbot');
             document.getElementById('alternate-chatbot-button').disabled = (mode === 'alternate_chatbot');
             currentChatbotMode = mode; // Update the current mode
+
+            // Display response message in the chat box
+            displayModeChangeMessage(mode);
+            showPopupMessage(mode);
         } else {
             console.error('Failed to switch chatbot mode');
         }
@@ -157,7 +164,47 @@ function setChatbotMode(mode) {
     });
 }
 
+// Function to display a response message
+function displayModeChangeMessage(mode) {
+    const responseContainer = document.getElementById('chatbot-response');
 
+    // Define messages for each mode
+    const messages = {
+        'main_chatbot': 'You are now using the Museum Information chatbot. You may ask anything you wish to know about the Booking process or the Museum.',
+        'alternate_chatbot': 'You are now using the Ticket Booker chatbot. Please answer any questions asked of you, to book your ticket.'
+    };
+
+    // Create a new message element
+    const messageElement = document.createElement('div');
+    messageElement.className = 'chatbot-message'; // Add a class for styling
+    messageElement.textContent = messages[mode] || 'Unknown mode selected.';
+
+    // Append the message to the response container
+    responseContainer.innerHTML = ''; // Clear previous messages
+    responseContainer.appendChild(messageElement);
+
+    // Optionally scroll to the bottom of the chat box
+    document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
+}
+
+function showPopupMessage(mode) {
+    const popup = document.getElementById('popup-message');
+    const messages = {
+        'main_chatbot': 'Switched to Museum Information chatbot.',
+        'alternate_chatbot': 'Switched to Ticket Booker chatbot.'
+    };
+
+    // Set popup message
+    popup.textContent = messages[mode] || 'Mode change detected.';
+
+    // Show the popup
+    popup.classList.add('show');
+
+    // Hide the popup after 3 seconds
+    setTimeout(() => {
+        popup.classList.remove('show');
+    }, 3000); // 3000 milliseconds = 3 seconds
+}
 // Event listeners for the buttons
 document.getElementById('main-chatbot-button').addEventListener('click', () => {
     setChatbotMode('main_chatbot');
@@ -166,6 +213,20 @@ document.getElementById('main-chatbot-button').addEventListener('click', () => {
 document.getElementById('alternate-chatbot-button').addEventListener('click', () => {
     setChatbotMode('alternate_chatbot');
 });
+
+// Initialize button states and message when the page loads
+window.addEventListener('DOMContentLoaded', () => {
+    initializeButtonStates();
+});
+
+function initializeButtonStates() {
+    // Ensure currentChatbotMode is set before using it
+    document.getElementById('main-chatbot-button').disabled = (currentChatbotMode === 'main_chatbot');
+    document.getElementById('alternate-chatbot-button').disabled = (currentChatbotMode === 'alternate_chatbot');
+    
+    // Display the initial mode change message
+    displayModeChangeMessage(currentChatbotMode);
+}
 
 
 async function sendMessage({ message = null } = {}) {
