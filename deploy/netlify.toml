@@ -1,8 +1,5 @@
 [build]
-  functions = "netlify/functions"
-  publish = "static"
+  functions = "deploy/netlify/functions"
 
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/json"
-  status = 200
+[dev]
+  functions = "deploy/netlify/functions"
