@@ -175,25 +175,27 @@ def handle_booking_chatbot(user_input):
         booking_data['total_cost'] = round(total_cost, 2)
         session['totalCost'] = booking_data['total_cost']  # Update session variable
 
+    current_step = booking_data.get('current_step', 0)
+    response_message = ""
+
     if user_input.lower() == 'back':
-        current_step = booking_data.get('current_step', 1)
         if current_step > 1:
             booking_data['current_step'] = current_step - 1
             response_message = get_step_prompt(booking_data['current_step'])
-            
-            # Recalculate cost after going back
-            recalculate_cost()
         else:
             response_message = "You are already at the first step."
         return response_message
 
-    # Handle steps and updates
-    current_step = booking_data.get('current_step', 1)
-    response_message = ""
+    if current_step == 0:
+        booking_data['greeting'] = user_input
+        response_message = "Please choose your language."
+        booking_data['current_step'] = 1  # Proceed to next step after valid input
 
-    if current_step == 1:
+    elif current_step == 1:
         booking_data['language'] = user_input
         response_message = "Please provide the size of your group."
+        booking_data['current_step'] = 2  # Proceed to next step after valid input
+
     elif current_step == 2:
         try:
             group_size = int(user_input)
@@ -208,65 +210,83 @@ def handle_booking_chatbot(user_input):
             booking_data['group_size'] = group_size
             booking_data['discount'] = discount
             response_message = "Please provide the ages of the people in your group."
-            recalculate_cost()
+            booking_data['current_step'] = 3  # Proceed to next step after valid input
+
         except ValueError:
             response_message = "Invalid group size. Please enter a number."
+
     elif current_step == 3:
         try:
             ages = list(map(int, user_input.split(',')))
+            group_size = booking_data.get('group_size', 0)
+
+            if len(ages) != group_size:
+                response_message = f"The number of ages provided ({len(ages)}) does not match the group size ({group_size}). Please provide the correct number of ages, or go back to change group size."
+                booking_data['ages'] = []  # Clear previous ages to prompt user again
+                return response_message
+
             booking_data['ages'] = ages
             recalculate_cost()
             response_message = "Do you require a tour guide?"
+            booking_data['current_step'] = 4  # Proceed to next step after valid input
+
         except ValueError:
             response_message = "Invalid ages input. Please provide ages separated by commas."
+
     elif current_step == 4:
         if user_input.lower() in ['yes', 'no']:
             booking_data['tour_guide'] = (user_input.lower() == 'yes')
             response_message = "Please provide the nationalities of your group."
             recalculate_cost()
+            booking_data['current_step'] = 5  # Proceed to next step after valid input
+
         else:
             response_message = "Invalid input. Please respond with 'yes' or 'no'."
+
     elif current_step == 5:
         nationalities = [n.strip() for n in user_input.split(',')]
         booking_data['nationalities'] = nationalities
         recalculate_cost()
         response_message = "Please provide the date and timeslot you wish to visit."
+        booking_data['current_step'] = 6  # Proceed to next step after valid input
+
     elif current_step == 6:
         try:
             date_str, timeslot_str = user_input.split()
-            date = datetime.datetime.strptime(date_str, '%Y-%m-%d').date()
+            date = datetime.datetime.strptime(date_str, '%d-%m-%Y').date()
             timeslot = datetime.datetime.strptime(timeslot_str, '%H:%M').time()
 
             if not is_museum_open(date, timeslot):
                 response_message = f"Sorry, the museum is closed on {date_str} at {timeslot_str}. Please choose another date and time."
             else:
                 response_message = "Please provide your contact information (email or mobile number)."
+                recalculate_cost()  # Recalculate cost before asking for contact information
+                booking_data['current_step'] = 7  # Proceed to next step after valid input
+
         except ValueError:
-            response_message = "Invalid date or timeslot format. Please enter in the format 'YYYY-MM-DD HH:MM'."
+            response_message = "Invalid date or timeslot format. Please enter in the format 'DD-MM-YY HH:MM'."
+
     elif current_step == 7:
-        booking_data['total_cost'] = round(booking_data['total_cost'], 2)  # Ensure cost is rounded
-        session['totalCost'] = booking_data['total_cost']  # Update session variable
-        response_message = f"Your total cost is {booking_data['total_cost']:.2f}. Please provide your contact information (email or mobile number)."
-    elif current_step == 8:
         contact_info = user_input
         response_message = (
             f"Thank you! Your booking is confirmed. A confirmation will be sent to {contact_info}. "
             f'<button id="setAmountButton">Set Amount and Go to Form</button>'
         )
-    booking_data['current_step'] = current_step + 1 
-    recalculate_cost()
+        # End of booking process
+        booking_data['current_step'] = 8
+
     return response_message
 
 def get_step_prompt(step_number):
     prompts = {
         1: "Please provide the language you prefer.",
         2: "Please provide the size of your group.",
-        3: "Please provide the ages of the people in your group.",
-        4: "Do you require a tour guide?",
-        5: "Please provide the nationalities of your group.",
-        6: "Please provide the date and timeslot you wish to visit.",
-        7: "Your total cost is calculated. Please provide your contact information.",
-        8: "Thank you! Your booking is complete."
+        3: "Please provide the ages of the people in your group, separated by commas.",
+        4: "Do you require a tour guide? Please respond with 'yes' or 'no'.",
+        5: "Please provide the nationalities of your group, separated by commas.",
+        6: "Please provide the date and timeslot you wish to visit in the format 'YYYY-MM-DD HH:MM'.",
+        7: "Your total cost has been calculated. Please provide your contact information (email or mobile number).",
+        8: "Thank you! Your booking is complete. A confirmation will be sent to your provided contact information."
     }
     return prompts.get(step_number, "Invalid step.")
 
