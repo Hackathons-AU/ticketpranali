@@ -6,7 +6,7 @@ import logging
 app = Flask(__name__)
 app.secret_key = 'supersecretkeyorisitreally?'
 
-API_KEY = "sk-proj-NmMnHeSI2smCOvO7SEaST3BlbkFJZQs8HFfJZvNAj2jfn4gB"
+API_KEY = "YOUR_API_KEY_HERE"
 API_URL = "https://api.openai.com/v1/chat/completions"
 # Constants for booking chatbot
 FULL_TICKET_PRICE = 500
@@ -35,7 +35,7 @@ MUSEUM_CLOSING_HOUR = datetime.time(17, 0)
 def is_museum_open(date, time):
     """
     Check if the museum is open at the given date and time.
-    
+
     Parameters:
     - date (datetime.date): The date to check.
     - time (datetime.time): The time to check.
@@ -47,14 +47,14 @@ def is_museum_open(date, time):
     closed_dates = [
         datetime.date(2024, 12, 25),  # Example: Closed on December 25th
     ]
-    
+
     if date in closed_dates:
         return False
-    
+
     # Check if the time is within the opening hours
     if MUSEUM_OPENING_HOUR <= time <= MUSEUM_CLOSING_HOUR:
         return True
-    
+
     return False
 
 DATA_FILE_PATH = 'e.txt'
@@ -71,6 +71,7 @@ data_context = load_data(DATA_FILE_PATH)
 def index():
     total_cost = session.get('totalCost', 0)
     return render_template('index.html', total_cost=total_cost)
+
 
 @app.route('/test')
 def test():
@@ -89,14 +90,14 @@ def pay():
 
 def process_main_chatbot(user_input):
     conversation_history.append({"role": "user", "content": user_input})
-    
+
     full_prompt = (
         f"You are acting in the role of a general information Chatbot, answering questions about Museum Ticket Booking. The user is asking: {user_input}\nBelow is a dataset with information:\n\n{data_context}\n Answer the user's question based on the dataset provided. If the question is a casual message or a general question somehow related to museums, respond appropriately. Format your sentences, and respond with concise messages. Do not hallucinate. If it cannot be answered, even based on the dataset, respond with 'Sorry, I can't answer that'."
     )
-    
+
     response, tokens_used = get_chatgpt_response(full_prompt, conversation_history)
     conversation_history.append({"role": "assistant", "content": response})
-    
+
     return jsonify({
         "reply": response,
         "tokens_used": tokens_used
@@ -134,20 +135,24 @@ def chat():
 def set_chatbot_mode():
     data = request.get_json()
     mode = data.get('mode')
-    
+
     if mode in ['main_chatbot', 'alternate_chatbot']:
         session['chatbot_mode'] = mode
+        session['booking_data'] = {'current_step': 0}  # Initialize booking data for new session
         return jsonify({"success": True}), 200
     return jsonify({"success": False}), 400
 
 def handle_booking_chatbot(user_input):
-    global booking_data
+    if 'booking_data' not in session:
+        session['booking_data'] = {'current_step': 0}  # Initialize booking data if not present
+
+    booking_data = session['booking_data']
 
     def recalculate_cost():
         # Recalculate total cost based on current booking data
         total_cost = 0
         ages = booking_data.get('ages', [])
-        
+
         for age in ages:
             if age < 2:
                 continue  # Ticket is free for infants
@@ -179,11 +184,12 @@ def handle_booking_chatbot(user_input):
     response_message = ""
 
     if user_input.lower() == 'back':
-        if current_step > 1:
+        if current_step > 0:
             booking_data['current_step'] = current_step - 1
             response_message = get_step_prompt(booking_data['current_step'])
         else:
             response_message = "You are already at the first step."
+        session['booking_data'] = booking_data  # Save updated booking data to session
         return response_message
 
     if current_step == 0:
@@ -264,16 +270,18 @@ def handle_booking_chatbot(user_input):
                 booking_data['current_step'] = 7  # Proceed to next step after valid input
 
         except ValueError:
-            response_message = "Invalid date or timeslot format. Please enter in the format 'DD-MM-YY HH:MM'."
+            response_message = "Invalid date or timeslot format. Please enter in the format 'DD-MM-YYYY HH:MM'."
 
     elif current_step == 7:
         contact_info = user_input
         response_message = (
-            f"Thank you! Your booking is confirmed. A confirmation will be sent to {contact_info}. "
+            f"Thank you! Your booking is confirmed. Your total cost is {booking_data['total_cost']:.2f}. A confirmation will be sent to {contact_info}. "
             f'<button id="setAmountButton">Set Amount and Go to Form</button>'
         )
         # End of booking process
         booking_data['current_step'] = 8
+
+    session['booking_data'] = booking_data  # Save updated booking data to session
 
     return response_message
 
@@ -284,7 +292,7 @@ def get_step_prompt(step_number):
         3: "Please provide the ages of the people in your group, separated by commas.",
         4: "Do you require a tour guide? Please respond with 'yes' or 'no'.",
         5: "Please provide the nationalities of your group, separated by commas.",
-        6: "Please provide the date and timeslot you wish to visit in the format 'YYYY-MM-DD HH:MM'.",
+        6: "Please provide the date and timeslot you wish to visit in the format 'DD-MM-YYYY HH:MM'.",
         7: "Your total cost has been calculated. Please provide your contact information (email or mobile number).",
         8: "Thank you! Your booking is complete. A confirmation will be sent to your provided contact information."
     }
@@ -295,7 +303,7 @@ def get_chatgpt_response(full_prompt, conversation_history):
         "Authorization": f"Bearer {API_KEY}",
         "Content-Type": "application/json"
     }
-    
+
     messages_with_prompt = conversation_history + [{"role": "user", "content": full_prompt}]
     payload = {
         "model": "gpt-3.5-turbo",
