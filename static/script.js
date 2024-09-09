@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     function changeLanguage(lang) {
         console.log(`Changing language to: ${lang}`); // Debugging line
-        const apiUrl = 'https://projectjson-1.onrender.com/content';
+        const apiUrl = 'https://balascode.github.io/gitjson/db.json';
 
 
         fetch(apiUrl)
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log('Data fetched:', data); // Debugging line
 
                 // Access the specific language data directly
-                const langData = data[lang];
+                const langData = data.content[lang];
                 if (!langData) {
                     throw new Error(`Language data for "${lang}" not found.`);
                 }
