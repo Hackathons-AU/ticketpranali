@@ -1,8 +1,0 @@
-{
-    "functions": {
-      "netlify/functions/*.js": {
-        "runtime": "nodejs14.x"
-      }
-    }
-  }
-  

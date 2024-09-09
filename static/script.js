@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     function changeLanguage(lang) {
         console.log(`Changing language to: ${lang}`); // Debugging line
+        const apiUrl = 'https://projectjson-1.onrender.com/content';
 
-        fetch('http://localhost:8080/content')
+
+        fetch(apiUrl)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -92,6 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Ensure the dropdown items exist before adding event listeners
     const dropdownItems = document.querySelectorAll('.dropdown-item');   
+    console.log('Dropdown items:', dropdownItems); // Debugging line
     if (dropdownItems.length > 0) {
         dropdownItems.forEach(item => {
             item.addEventListener('click', function (e) {
@@ -104,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.warn('No dropdown items found.');
     }
+    
 
     // Ensure the elements exist before trying to set default language content
     if (document.getElementById('welcome') && document.getElementById('about_heading') && document.getElementById('about_paragraph')) {
@@ -112,7 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('One or more elements not found for setting default language content.');
     }
 });
-
 
 
 

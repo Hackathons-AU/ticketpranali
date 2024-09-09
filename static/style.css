@@ -510,7 +510,7 @@ left: 1100px; /* Adjust as needed */
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
+/* 
 @media (max-width:991px){
     .nli{
         margin-right: 0px !important;
@@ -524,10 +524,10 @@ left: 1100px; /* Adjust as needed */
 
 @media (min-width:992px) {
     .nli{
-        margin-right: 200px !important;
+        margin-left: 320px !important;
     }
 
     .nlc{
-        margin-left: 150px !important;
+        margin-left: 250px !important;
     }
-}
+} */
