@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify, render_template, session, redirect, url_for
 import datetime
 import json
-import os
 import requests
 import logging
 app = Flask(__name__)
@@ -320,5 +319,5 @@ def get_chatgpt_response(full_prompt, conversation_history):
         return "An error occurred", 0
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=True)
+    app.run(debug=True)
 
