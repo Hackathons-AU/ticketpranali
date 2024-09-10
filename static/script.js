@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Ensure the dropdown items exist before adding event listeners
-    const dropdownItems = document.querySelectorAll('.dropdown-item');   
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
     console.log('Dropdown items:', dropdownItems); // Debugging line
     if (dropdownItems.length > 0) {
         dropdownItems.forEach(item => {
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.warn('No dropdown items found.');
     }
-    
+
 
     // Ensure the elements exist before trying to set default language content
     if (document.getElementById('welcome') && document.getElementById('about_heading') && document.getElementById('about_paragraph')) {
@@ -226,7 +226,7 @@ function initializeButtonStates() {
     // Ensure currentChatbotMode is set before using it
     document.getElementById('main-chatbot-button').disabled = (currentChatbotMode === 'main_chatbot');
     document.getElementById('alternate-chatbot-button').disabled = (currentChatbotMode === 'alternate_chatbot');
-    
+
     // Display the initial mode change message
     displayModeChangeMessage(currentChatbotMode);
 }
@@ -307,7 +307,7 @@ document.getElementById('minimize-button').addEventListener('click', (event) => 
         welcome.textContent = " ";
         map.className = 'container-fluid';
         chatcntrl.style.display = "none";
-        map.scrollIntoView({ 
+        map.scrollIntoView({
             behavior: 'smooth', // Smooth scrolling
             block: 'start' // Align to the top of the element (can be 'start', 'center', 'end', 'nearest')
         });
@@ -335,21 +335,44 @@ document.getElementById('chat-container').addEventListener('click', () => {
     }
 });
 
+let messageSent = false;
 
+function setupDropdownListener(dropdown) {
+    dropdown.addEventListener('change', function() {
+        const selectedValue = this.value; // Get the selected value
+        if (!messageSent) {
+            sendMessage({ message: selectedValue });
+            messageSent = true;
+        }
+        dropdown.parentNode.removeChild(dropdown);
+    });
+}
+
+function pollForDropdown() {
+    const dropdown = document.getElementById('TG');
+    if (dropdown) {
+        setupDropdownListener(dropdown);
+        // Reset messageSent flag when a new dropdown is found
+        messageSent = false;
+    }
+}
+
+// Start polling for the dropdown
+setInterval(pollForDropdown, 1000);
 
 let currentBackButton = null; // Keep track of the current back button
 
 function appendMessage(sender, message, type) {
     const chatBox = document.getElementById('chat-box');
-    
+
     // Remove the previous back button if it exists
     if (currentBackButton) {
         currentBackButton.style.display = 'none';
     }
-    
+
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${type}`;
-    
+
     const logoDiv = document.createElement('div');
     logoDiv.className = 'message-logo';
 
@@ -411,9 +434,9 @@ document.addEventListener('click', function(event) {
     if (event.target && event.target.id === 'setAmountButton') {
         const amountElement = document.getElementById('total-cost');
         const amount = amountElement ? parseFloat(amountElement.textContent.replace('Total cost: $', '')) : 0;
-        
+
         localStorage.setItem('amount', String(amount));
-        
+
         window.location.href = 'pay'; // Redirect to payment form
     }
 });

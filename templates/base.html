@@ -9,6 +9,7 @@
     <script src="https://kit.fontawesome.com/e71e11fa5b.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
@@ -17,7 +18,7 @@
 
     <div id="home">
         <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
-            <a class="navbar-brand nav-lg d-flex flex-row nli" href="#aboutme"> 
+            <a class="navbar-brand nav-lg d-flex flex-row nli" href="#aboutme">
                 <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="navbarimg" alt="Logo" />
             <h1 class="navhead ml-2 mt-auto mb-auto"> Ticket Pranali  </h1>
             </a>
@@ -75,17 +76,17 @@
                             <map name="museummap">
                             <!-- Left Third -->
                             <area shape="rect" coords="0,0,600,800" href="#" alt="Ancient Artifacts" onclick="showInfo('ancient'); return false;">
-                            
+
                             <!-- Middle Third -->
                             <area shape="rect" coords="600,0,850,800" href="#" alt="Modern Art" onclick="showInfo('modern'); return false;">
-                            
+
                             <area shape="rect" coords="850,0,1100,800" href="#" alt="Modern Art" onclick="showInfo('modern2'); return false;">
-                            
+
                             <!-- Right Third -->
                             <area shape="rect" coords="1100,0,1600,800" href="#" alt="Interactive Exhibits" onclick="showInfo('interactive'); return false;">
                             </map>
-                        
-                        
+
+
                                 <div id="ancient" class="info-box">
                                     <button class="close-btn" onclick="closeInfo('ancient')">×</button>
                                     <h2>Ancient Artifacts</h2>
@@ -107,7 +108,7 @@
                                     <p>Engage with hands-on displays.</p>
                                 </div>
                             </div>
-            
+
                         </div>
                     </div>
                 </div>
@@ -130,19 +131,19 @@
                 <div class="col-12 col-md-6 d-flex flex-column justify-content-md-center mb-5 order-2 order-md-2">
                     <h1 id="about_heading" class="a-head mb-4"> Why You should Use Our App: </h1>
                     <p id="about_paragraph" class="a-para"> Our website offers a seamless and hassle-free experience for booking tickets to museums across India. Here’s why you should choose us:                    </p>
-                    <p id="ap1" class="a-para"> <span class="a-span">1. Convenience and Flexibility: </span> 
+                    <p id="ap1" class="a-para"> <span class="a-span">1. Convenience and Flexibility: </span>
                     Book your tickets anytime, anywhere, from the comfort of your home or on the go. Our user-friendly interface ensures a smooth and quick booking process.
                     </p>
                 </div>
 
                 <div class="col-12 col-md-6 d-flex flex-column justify-content-md-center mb-5 order-4 order-md-3">
-                    <p id="ap2" class="a-para"> <span class="a-span">2. Wide Selection of Museums: </span> 
+                    <p id="ap2" class="a-para"> <span class="a-span">2. Wide Selection of Museums: </span>
                         We partner with a diverse range of museums across India, offering you access to popular destinations and hidden gems alike.
                     </p>
-                    <p id="ap3" class="a-para"> <span class="a-span">3. Real-Time Availability: </span> 
-                        Our platform provides up-to-date information on ticket availability, ensuring you get your preferred time slots without any surprises.                        
+                    <p id="ap3" class="a-para"> <span class="a-span">3. Real-Time Availability: </span>
+                        Our platform provides up-to-date information on ticket availability, ensuring you get your preferred time slots without any surprises.
                     </p>
-                    <p id="ap4" class="a-para"> <span class="a-span">4. Secure Payments:  </span> 
+                    <p id="ap4" class="a-para"> <span class="a-span">4. Secure Payments:  </span>
                         Your transactions are safe with us. We use advanced encryption technology to protect your payment information.                    </p>
                 </div>
 
@@ -159,16 +160,16 @@
                 </div>
 
                 <div class="col-12 col-md-6 d-flex flex-column justify-content-md-center order-6 order-md-6">
-                    <p id="ap5" class="a-para"> <span class="a-span">5. Special Offers and Discounts:  </span> 
+                    <p id="ap5" class="a-para"> <span class="a-span">5. Special Offers and Discounts:  </span>
                         Enjoy exclusive deals and discounts on museum tickets, making your visit more affordable.</p>
-                    <p id="ap6" class="a-para"> <span class="a-span">6. Skip the Queues: </span> 
+                    <p id="ap6" class="a-para"> <span class="a-span">6. Skip the Queues: </span>
                         Save time by skipping the long queues at the ticket counters. With our e-tickets, you can walk straight into the museum.
                     </p>
-                    <p id="ap7" class="a-para"> <span class="a-span">7. Customer Support:  </span> 
+                    <p id="ap7" class="a-para"> <span class="a-span">7. Customer Support:  </span>
                         Our dedicated customer support team is available to assist you with any queries or issues, ensuring a smooth experience from start to finish.
                     </p>
                     <p id="ap8" class="a-para" style="font-weight: 700;"> By choosing our website, you’re not just booking a ticket—you’re securing a memorable and enriching experience at some of India’s finest museums.</p>
-                    
+
                 </div>
 
             </div>
@@ -465,8 +466,8 @@
                     </div>
                 </div>
             </div>
-    
-    
+
+
             <div class="row mt-3">
                 <div class="col-md-12 text-center">
                     <p id="ft11">&copy; <script>document.write(new Date().getFullYear());</script> Ticket Pranali. All Rights Reserved.</p>
@@ -474,8 +475,8 @@
             </div>
         </div>
     </footer>
-    
-<script src="{{ url_for('static', filename='script.js') }}"></script>  
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 

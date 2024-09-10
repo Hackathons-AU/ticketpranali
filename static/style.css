@@ -60,17 +60,17 @@ body {
     border: none;
     border-radius: 25px;
     padding: 10px 20px;
-    font-size: 16px; 
+    font-size: 16px;
     cursor: pointer;
     margin-top: 10px;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    display: block; 
-    text-align: center; 
+    display: block;
+    text-align: center;
 }
 
 
 .back-button:hover {
-    background-color: #0056b3; 
+    background-color: #0056b3;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -96,26 +96,6 @@ body {
     cursor: not-allowed;
 }
 
-/* Button hover effect */
-#setAmountButton:hover {
-    background-color: #0056b3; /* Darker background color on hover */
-}
-
-/* Specific styles for setAmountButton */
-#setAmountButton {
-    margin-top: 10px; 
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px; 
-    padding: 10px 20px; 
-    cursor: pointer; 
-    transition: background-color 0.3s; /* Smooth background color transition */
-    padding: 10px;
-    border-radius: 10px;
-}
 
 /* Optional: Style for messages with buttons */
 .message.booking .message-content {
@@ -137,7 +117,7 @@ body {
 
 #customdrop {
     min-width: 100px;
-    max-width: 150px; 
+    max-width: 150px;
     width: auto;
     z-index: 1000;
     background-color: #4bb2bf;
@@ -516,7 +496,7 @@ left: 1100px; /* Adjust as needed */
     #chat-container{
         position: relative !important;
     }
-    
+
 }
 
 /* @media (min-width:992px) {
