@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('lan').textContent = langData.lan;
 
                 document.querySelector('.navhead').textContent = langData.head;
+                document.getElementById('ap0').textContent = langData.aboutus;
                 document.getElementById('ap1').textContent = langData.ap1;
                 document.getElementById('ap2').textContent = langData.ap2;
                 document.getElementById('ap3').textContent = langData.ap3;
@@ -70,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('fq28').textContent = langData.fq28;
                 document.getElementById('fq29').textContent = langData.fq29;
                 document.getElementById('fq30').textContent = langData.fq30;
+                document.getElementById('fq31').textContent = langData.fq31;
 
                 document.getElementById('ft1').textContent = langData.ft1;
                 document.getElementById('ft2').textContent = langData.ft2;

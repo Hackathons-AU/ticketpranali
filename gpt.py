@@ -6,7 +6,7 @@ import logging
 app = Flask(__name__)
 app.secret_key = 'supersecretkeyorisitreally?'
 
-API_KEY = "YOUR_API_KEY_HERE"
+API_KEY = "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"
 API_URL = "https://api.openai.com/v1/chat/completions"
 # Constants for booking chatbot
 FULL_TICKET_PRICE = 500
