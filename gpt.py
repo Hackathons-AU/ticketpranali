@@ -3,12 +3,15 @@ import datetime
 import json
 import requests
 import logging
+from googletrans import Translator
+
 app = Flask(__name__)
 app.secret_key = 'supersecretkeyorisitreally?'
 
 API_KEY = "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"
 API_URL = "https://api.openai.com/v1/chat/completions"
-# Constants for booking chatbot
+
+# Ticket and discount prices
 FULL_TICKET_PRICE = 500
 HALF_TICKET_PRICE = 250
 TOUR_GUIDE_COST = 200
@@ -26,35 +29,17 @@ ACTIVATION_KEYWORDS = {
     'museum': 'main_chatbot',
     'switch': 'alternate_chatbot'  # Keyword to switch to alternate chatbot
 }
-import datetime
 
-# Define museum hours (example: open every day from 9:00 AM to 5:00 PM)
+# Define museum hours
 MUSEUM_OPENING_HOUR = datetime.time(9, 0)
 MUSEUM_CLOSING_HOUR = datetime.time(17, 0)
 
 def is_museum_open(date, time):
-    """
-    Check if the museum is open at the given date and time.
-
-    Parameters:
-    - date (datetime.date): The date to check.
-    - time (datetime.time): The time to check.
-
-    Returns:
-    - bool: True if the museum is open, False otherwise.
-    """
-    # Check if the museum is closed on certain dates (e.g., public holidays)
-    closed_dates = [
-        datetime.date(2024, 12, 25),  # Example: Closed on December 25th
-    ]
-
+    closed_dates = [datetime.date(2024, 12, 25)]
     if date in closed_dates:
         return False
-
-    # Check if the time is within the opening hours
     if MUSEUM_OPENING_HOUR <= time <= MUSEUM_CLOSING_HOUR:
         return True
-
     return False
 
 DATA_FILE_PATH = 'e.txt'
@@ -64,14 +49,36 @@ def load_data(file_path):
         data = file.read()
     return data
 
-# Load data when the application starts
 data_context = load_data(DATA_FILE_PATH)
+
+# Initialize Google Translate API client
+translator = Translator()
+
+@app.route('/attraction_dashboard')
+def attraction_dashboard():
+    return render_template('attraction_dashboard.html')
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
+
+@app.route('/museum')
+def museum():
+    return render_template('museum.html')
+
+def translate_text(text, target_language):
+    try:
+        translated = translator.translate(text, dest=target_language)
+        return translated.text
+    except Exception as e:
+        logging.error(f"Translation error: {e}")
+        return text
+
 
 @app.route('/')
 def index():
     total_cost = session.get('totalCost', 0)
     return render_template('index.html', total_cost=total_cost)
-
 
 @app.route('/test')
 def test():
@@ -89,14 +96,17 @@ def pay():
     return render_template('pay.html')
 
 def process_main_chatbot(user_input):
-    conversation_history.append({"role": "user", "content": user_input})
+    if 'conversation_history' not in session:
+        session['conversation_history'] = []
+
+    session['conversation_history'].append({"role": "user", "content": user_input})
 
     full_prompt = (
         f"You are acting in the role of a general information Chatbot, answering questions about Museum Ticket Booking. The user is asking: {user_input}\nBelow is a dataset with information:\n\n{data_context}\n Answer the user's question based on the dataset provided. If the question is a casual message or a general question somehow related to museums, respond appropriately. Format your sentences, and respond with concise messages. Do not hallucinate. If it cannot be answered, even based on the dataset, respond with 'Sorry, I can't answer that'."
     )
 
-    response, tokens_used = get_chatgpt_response(full_prompt, conversation_history)
-    conversation_history.append({"role": "assistant", "content": response})
+    response, tokens_used = get_chatgpt_response(full_prompt, session['conversation_history'])
+    session['conversation_history'].append({"role": "assistant", "content": response})
 
     return jsonify({
         "reply": response,
@@ -111,11 +121,9 @@ def chat():
     if not user_input:
         return jsonify({"reply": "No message provided"}), 400
 
-    # Initialize chatbot mode if not set
     if 'chatbot_mode' not in session:
         session['chatbot_mode'] = 'alternate_chatbot'
 
-    # Check activation keywords
     if user_input.lower().startswith('switch'):
         mode = user_input.split(' ')[1]
         if mode in ['main_chatbot', 'alternate_chatbot']:
@@ -123,7 +131,6 @@ def chat():
             response = f"Switched to {mode.replace('_', ' ')} mode."
             return jsonify({"reply": response})
 
-    # Process request based on chatbot mode
     if session['chatbot_mode'] == 'main_chatbot':
         return process_main_chatbot(user_input)
     else:
@@ -138,38 +145,41 @@ def set_chatbot_mode():
 
     if mode in ['main_chatbot', 'alternate_chatbot']:
         session['chatbot_mode'] = mode
-        session['booking_data'] = {'current_step': 0}  # Initialize booking data for new session
+        session['booking_data'] = {'current_step': 0}
         return jsonify({"success": True}), 200
     return jsonify({"success": False}), 400
 
 def handle_booking_chatbot(user_input):
     if 'booking_data' not in session:
-        session['booking_data'] = {'current_step': 0}  # Initialize booking data if not present
+        session['booking_data'] = {'current_step': 0}
 
     booking_data = session['booking_data']
 
+    # Mapping for yes/no translations
+    yes_no_map = {
+        'en': {'yes': True, 'no': False},
+        'sv': {'ja': True, 'nej': False},  # Swedish
+        # Add more languages as needed
+    }
+
     def recalculate_cost():
-        # Recalculate total cost based on current booking data
         total_cost = 0
         ages = booking_data.get('ages', [])
 
         for age in ages:
             if age < 2:
-                continue  # Ticket is free for infants
+                continue
             elif age >= 11:
                 total_cost += FULL_TICKET_PRICE
             else:
                 total_cost += HALF_TICKET_PRICE
 
-        # Apply discounts
         if booking_data.get('discount', 0) > 0:
             total_cost -= total_cost * booking_data['discount']
 
-        # Add tour guide cost if needed
         if booking_data.get('tour_guide', False):
             total_cost += TOUR_GUIDE_COST
 
-        # Apply nationality discounts
         nationalities = booking_data.get('nationalities', [])
         for nationality in nationalities:
             if nationality.lower() in ['india', 'indian']:
@@ -178,7 +188,7 @@ def handle_booking_chatbot(user_input):
                 total_cost *= (1 - SAARC_DISCOUNT)
 
         booking_data['total_cost'] = round(total_cost, 2)
-        session['totalCost'] = booking_data['total_cost']  # Update session variable
+        session['totalCost'] = booking_data['total_cost']
 
     current_step = booking_data.get('current_step', 0)
     response_message = ""
@@ -189,18 +199,18 @@ def handle_booking_chatbot(user_input):
             response_message = get_step_prompt(booking_data['current_step'])
         else:
             response_message = "You are already at the first step."
-        session['booking_data'] = booking_data  # Save updated booking data to session
-        return response_message
+        session['booking_data'] = booking_data
+        return translate_text(response_message, booking_data.get('language', 'en'))
 
     if current_step == 0:
         booking_data['greeting'] = user_input
         response_message = "Please choose your language."
-        booking_data['current_step'] = 1  # Proceed to next step after valid input
+        booking_data['current_step'] = 1
 
     elif current_step == 1:
         booking_data['language'] = user_input
         response_message = "Please provide the size of your group."
-        booking_data['current_step'] = 2  # Proceed to next step after valid input
+        booking_data['current_step'] = 2
 
     elif current_step == 2:
         try:
@@ -216,7 +226,7 @@ def handle_booking_chatbot(user_input):
             booking_data['group_size'] = group_size
             booking_data['discount'] = discount
             response_message = "Please provide the ages of the people in your group."
-            booking_data['current_step'] = 3  # Proceed to next step after valid input
+            booking_data['current_step'] = 3
 
         except ValueError:
             response_message = "Invalid group size. Please enter a number."
@@ -228,33 +238,100 @@ def handle_booking_chatbot(user_input):
 
             if len(ages) != group_size:
                 response_message = f"The number of ages provided ({len(ages)}) does not match the group size ({group_size}). Please provide the correct number of ages, or go back to change group size."
-                booking_data['ages'] = []  # Clear previous ages to prompt user again
-                return response_message
+                booking_data['ages'] = []
+                return translate_text(response_message, booking_data.get('language', 'en'))
 
             booking_data['ages'] = ages
             recalculate_cost()
             response_message = "Do you require a tour guide?"
-            booking_data['current_step'] = 4  # Proceed to next step after valid input
+            booking_data['current_step'] = 4
 
         except ValueError:
             response_message = "Invalid ages input. Please provide ages separated by commas."
 
     elif current_step == 4:
-        if user_input.lower() in ['yes', 'no']:
-            booking_data['tour_guide'] = (user_input.lower() == 'yes')
-            response_message = "Please provide the nationalities of your group."
-            recalculate_cost()
-            booking_data['current_step'] = 5  # Proceed to next step after valid input
+        language = booking_data.get('language', 'en')
+        yes_no_map = {
+            'en': {'yes': True, 'no': False},
+            'sv': {'ja': True, 'nej': False},  # Swedish
+            'swedish': {'ja': True, 'nej': False},  # Swedish
+            'Swedish': {'ja': True, 'nej': False},  # Swedish
+            'Svenska': {'ja': True, 'nej': False},  # Swedish
 
+            # Telugu
+            'te': {'అవును': True, 'లేదు': False},  # Telugu
+            'telugu': {'అవును': True, 'లేదు': False},  # Telugu
+
+            # Hindi
+            'hi': {'हाँ': True, 'नहीं': False},  # Hindi
+            'hindi': {'हाँ': True, 'नहीं': False},  # Hindi
+
+            # Marathi
+            'mr': {'होय': True, 'नाही': False},  # Marathi
+            'marathi': {'होय': True, 'नाही': False},  # Marathi
+
+            # Punjabi
+            'pa': {'ਹਾਂ': True, 'ਨਹੀਂ': False},  # Punjabi
+            'punjabi': {'ਹਾਂ': True, 'ਨਹੀਂ': False},  # Punjabi
+
+            # Gujarati
+            'gu': {'હા': True, 'ના': False},  # Gujarati
+            'gujarati': {'હા': True, 'ના': False},  # Gujarati
+
+            # Malayalam
+            'ml': {'അതെ': True, 'അല്ല': False},  # Malayalam
+            'malayalam': {'അതെ': True, 'അല്ല': False},  # Malayalam
+
+            # Tamil
+            'ta': {'ஆம்': True, 'இல்லை': False},  # Tamil
+            'tamil': {'ஆம்': True, 'இல்லை': False},  # Tamil
+
+            # Kannada
+            'kn': {'ಹೌದು': True, 'ಇಲ್ಲ': False},  # Kannada
+            'kannada': {'ಹೌದು': True, 'ಇಲ್ಲ': False}  # Kannada
+        }
+
+        yes_no_translations = yes_no_map.get(language, yes_no_map['en'])
+        user_input_lower = user_input.lower()
+        yes_no = ["yes", "no"]
+
+        yes_text = translate_text("Yes", language)
+        no_text = translate_text("No", language)
+        choose = translate_text("Choose", language)
+        dropdown_html = f"""
+        <select name="TourGuide" id="TG">
+            <option value="idk">{choose} </option>
+            <option value="yes">Yes : {yes_text}</option>
+            <option value="no">No : {no_text}</option>
+        </select>"""
+        a = translate_text("Invalid input. Please respond with 'yes' or 'no', or select from the list below", language)
+        b = translate_text("Please provide the nationalities of your group.", language)
+        # Check if the user_input matches any of the yes/no translations
+        if user_input_lower in yes_no_translations:
+            booking_data['tour_guide'] = yes_no_translations[user_input_lower]
+            response_message = b
+            recalculate_cost()
+            booking_data['current_step'] = 5
+            return response_message
+        elif user_input_lower in yes_no:
+            # Handle if user provides input directly matching the values
+            booking_data['tour_guide'] = user_input
+            response_message = b
+            recalculate_cost()
+            booking_data['current_step'] = 5
+            return response_message
         else:
-            response_message = "Invalid input. Please respond with 'yes' or 'no'."
+            response_message = f"{a}:<br>{dropdown_html}"
+
+        # Translate the final response message
+        return response_message
 
     elif current_step == 5:
         nationalities = [n.strip() for n in user_input.split(',')]
         booking_data['nationalities'] = nationalities
         recalculate_cost()
         response_message = "Please provide the date and timeslot you wish to visit."
-        booking_data['current_step'] = 6  # Proceed to next step after valid input
+        booking_data['current_step'] = 6
 
     elif current_step == 6:
         try:
@@ -266,25 +343,47 @@ def handle_booking_chatbot(user_input):
                 response_message = f"Sorry, the museum is closed on {date_str} at {timeslot_str}. Please choose another date and time."
             else:
                 response_message = "Please provide your contact information (email or mobile number)."
-                recalculate_cost()  # Recalculate cost before asking for contact information
-                booking_data['current_step'] = 7  # Proceed to next step after valid input
+                recalculate_cost()
+                booking_data['current_step'] = 7
 
         except ValueError:
             response_message = "Invalid date or timeslot format. Please enter in the format 'DD-MM-YYYY HH:MM'."
 
     elif current_step == 7:
         contact_info = user_input
+        language = booking_data.get('language', 'en')
+        d  = translate_text("Thank you! Your booking is confirmed. Your total cost is", language)
+        e = translate_text(" A confirmation will be sent to", language)
+        tx = translate_text("The museum is located at :", language)
         response_message = (
-            f"Thank you! Your booking is confirmed. Your total cost is {booking_data['total_cost']:.2f}. A confirmation will be sent to {contact_info}. "
-            f'<button id="setAmountButton">Set Amount and Go to Form</button>'
+            f"{d} {booking_data['total_cost']:.2f}. {e} {contact_info}. "
+            f'<button id="setAmountButton" class="btn btn-outline-primary"">Pay Now</button><hr>'
+            f"{tx} "
+            f'<a class="btn btn-outline-primary"" href="https://maps.app.goo.gl/TB6WxmBTrGd5YNB96" role="button">Museum <i class="fa fa-map-marker"></i></a>'
+            f'<iframe src="https://www.google.com/maps/embed?pb=!4v1725963013846!6m8!1m7!1sw7h0zR0c4RsqanrfUro2yw!2m2!1d28.61199138717281!2d77.21925710076482!3f222.0825619220984!4f-4.589567401690715!5f0.7820865974627469" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
+
         )
-        # End of booking process
         booking_data['current_step'] = 8
+        return response_message
 
-    session['booking_data'] = booking_data  # Save updated booking data to session
+    else:
+        tx = translate_text("The museum is located at :", language)
+        response_message = (
+            f"{tx} "
+            f'<iframe src="https://www.google.com/maps/embed?pb=!4v1725963013846!6m8!1m7!1sw7h0zR0c4RsqanrfUro2yw!2m2!1d28.61199138717281!2d77.21925710076482!3f222.0825619220984!4f-4.589567401690715!5f0.7820865974627469" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
+        )
+        return response_message
 
-    return response_message
+    session['booking_data'] = booking_data
 
+    language = booking_data.get('language', 'en')
+
+    language = booking_data.get('language', 'en')
+    translated_response = translate_text(response_message, language)
+
+
+
+    return translated_response
 def get_step_prompt(step_number):
     prompts = {
         1: "Please provide the language you prefer.",

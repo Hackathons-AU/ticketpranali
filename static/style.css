@@ -5,7 +5,28 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    overflow-y: scroll;
 }
+
+body::-webkit-scrollbar {
+    width: 8px; 
+}
+
+body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 25px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #45f5ef;
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background-color: #0aa6a1; 
+}
+
 
 .top-head{
     font-size: 40px;
@@ -14,6 +35,68 @@ body {
     color: #16325B;
     text-align: center;
 }
+
+
+/* Typewriter effect */
+@keyframes typewriter {
+    from {
+        width: 0;
+    }
+    to {
+        width: 95%;
+    }
+}
+
+/* Rotating settings icon */
+@keyframes rotateSettings {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Style for the typewriter text */
+.typewriter-text {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 3px solid transparent; /* Hide the cursor */
+    animation: typewriter 3s steps(30) 0s 1 normal both; /* Adjust timing as needed */
+    font-size: 40px; /* Adjust text size */
+    line-height: 1.2; /* Adjust line height to align with the icon */
+    vertical-align: middle;
+}
+
+/* Style for the rotating settings icon */
+.settings-icon {
+    display: inline-block;
+    vertical-align: middle; /* Align icon with the text */
+    margin-left: 8px; /* Adjust spacing between text and icon */
+    font-size: 35px; /* Adjust icon size */
+    animation: rotateSettings 2s linear infinite; /* Continuous rotation */
+    color: #0eaba6; /* Icon color */
+}
+
+/* Container to make sure text and icon are aligned */
+.typewriter-container {
+    display: inline-block;
+}
+
+
+.fade-in-section {
+    opacity: 0;
+    transform: translateY(30px); 
+    transition: opacity 1.0s ease-out, transform 1.0s ease-out;
+    will-change: opacity, transform;
+}
+
+.fade-in-section.is-visible {
+    opacity: 1;
+    transform: translateY(0); 
+}
+
 
 .custom-navbar{
     background-color: #4bb2bf;
@@ -60,17 +143,17 @@ body {
     border: none;
     border-radius: 25px;
     padding: 10px 20px;
-    font-size: 16px; 
+    font-size: 16px;
     cursor: pointer;
     margin-top: 10px;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    display: block; 
-    text-align: center; 
+    display: block;
+    text-align: center;
 }
 
 
 .back-button:hover {
-    background-color: #0056b3; 
+    background-color: #0056b3;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -96,26 +179,6 @@ body {
     cursor: not-allowed;
 }
 
-/* Button hover effect */
-#setAmountButton:hover {
-    background-color: #0056b3; /* Darker background color on hover */
-}
-
-/* Specific styles for setAmountButton */
-#setAmountButton {
-    margin-top: 10px; 
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px; 
-    padding: 10px 20px; 
-    cursor: pointer; 
-    transition: background-color 0.3s; /* Smooth background color transition */
-    padding: 10px;
-    border-radius: 10px;
-}
 
 /* Optional: Style for messages with buttons */
 .message.booking .message-content {
@@ -137,7 +200,7 @@ body {
 
 #customdrop {
     min-width: 100px;
-    max-width: 150px; 
+    max-width: 150px;
     width: auto;
     z-index: 1000;
     background-color: #4bb2bf;
@@ -392,7 +455,7 @@ left: 1100px; /* Adjust as needed */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    position:  absolute;
+    position:  relative;
     z-index: 999;
     width: 100%;
     border-radius: 10px;
@@ -516,7 +579,7 @@ left: 1100px; /* Adjust as needed */
     #chat-container{
         position: relative !important;
     }
-    
+
 }
 
 /* @media (min-width:992px) {

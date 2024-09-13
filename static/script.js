@@ -1,3 +1,29 @@
+// scroll.js
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        window.scrollTo(0, 0);
+    }, 100);
+});
+
+// Function to observe each section and trigger the animation
+document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('.fade-in-section');
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible'); // Add visible class when section is in view
+                observer.unobserve(entry.target); // Stop observing once it's visible
+            }
+        });
+    }, { threshold: 0.1 }); // Trigger when 10% of the section is visible
+
+    sections.forEach(section => {
+        observer.observe(section); // Observe each section
+    });
+});
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
     function changeLanguage(lang) {
         console.log(`Changing language to: ${lang}`); // Debugging line
@@ -95,21 +121,29 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Ensure the dropdown items exist before adding event listeners
-    const dropdownItems = document.querySelectorAll('.dropdown-item');   
-    console.log('Dropdown items:', dropdownItems); // Debugging line
-    if (dropdownItems.length > 0) {
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', function (e) {
-                e.preventDefault();
-                const selectedLang = this.getAttribute('data-lang');
-                console.log(`Language selected: ${selectedLang}`); // Debugging line
-                changeLanguage(selectedLang);
+    const languageDropdown = document.querySelector('#lan');
+    const dropdownMenu = languageDropdown.nextElementSibling;
+
+    if (dropdownMenu) {
+        const dropdownItems = dropdownMenu.querySelectorAll('.dropdown-item');
+        console.log('Dropdown items:', dropdownItems); // Debugging line
+
+        if (dropdownItems.length > 0) {
+            dropdownItems.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const selectedLang = this.getAttribute('data-lang');
+                    console.log(`Language selected: ${selectedLang}`); // Debugging line
+                    changeLanguage(selectedLang);
+                });
             });
-        });
+        } else {
+            console.warn('No dropdown items found.');
+        }
     } else {
-        console.warn('No dropdown items found.');
+        console.warn('Dropdown menu not found.');
     }
-    
+
 
     // Ensure the elements exist before trying to set default language content
     if (document.getElementById('welcome') && document.getElementById('about_heading') && document.getElementById('about_paragraph')) {
@@ -118,8 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('One or more elements not found for setting default language content.');
     }
 });
-
-
 
 //----------------------------------------------------------------
 function showInfo(id) {
@@ -228,7 +260,7 @@ function initializeButtonStates() {
     // Ensure currentChatbotMode is set before using it
     document.getElementById('main-chatbot-button').disabled = (currentChatbotMode === 'main_chatbot');
     document.getElementById('alternate-chatbot-button').disabled = (currentChatbotMode === 'alternate_chatbot');
-    
+
     // Display the initial mode change message
     displayModeChangeMessage(currentChatbotMode);
 }
@@ -276,82 +308,112 @@ document.getElementById('user-input').addEventListener('keydown', (event) => {
     }
 });
 
-// Add event listener for the "Send" button
 document.getElementById('send-button').addEventListener('click', () => {
     sendMessage();
 });
 
-isMinimized = false;
+isMinimized = false; 
 
 document.getElementById('minimize-button').addEventListener('click', (event) => {
-    event.stopPropagation(); // Prevents the event from bubbling up and expanding the chat container again
+    event.stopPropagation(); 
     const chatContainer = document.getElementById('chat-container');
-    const welcome = document.getElementById('welcome');
-    var map = document.getElementById('map');
     const chatcntrl = document.getElementById('chat-controls');
+    const museumContainer = document.getElementById('museum-container');
+    const welcome = document.getElementById('welcome'); 
+    const setting = document.getElementById('setting');
 
     if (isMinimized) {
         // Expand the chat container
-        chatContainer.classList.remove('minimized');
-        chatContainer.classList.remove('minimized-logo');
+        chatContainer.classList.remove('minimized', 'minimized-logo');
         document.getElementById('minimize-button').innerHTML = '<i class="fas fa-minus"></i>';
         isMinimized = false;
 
-        // Delay setting the display property to ensure the container is fully expanded
         setTimeout(() => {
             chatcntrl.style.display = "block";
-        }, 300); // Adjust delay if necessary
+            museumContainer.style.display = "none"; 
+        }, 300); 
     } else {
-        // Minimize the chat container
-        chatContainer.classList.add('minimized');
-        chatContainer.classList.add('minimized-logo');
+        
+        chatContainer.classList.add('minimized', 'minimized-logo');
         isMinimized = true;
         welcome.textContent = " ";
-        map.className = 'container-fluid';
-        chatcntrl.style.display = "none";
-        map.scrollIntoView({ 
-            behavior: 'smooth', // Smooth scrolling
-            block: 'start' // Align to the top of the element (can be 'start', 'center', 'end', 'nearest')
+        setting.style.display="none";
+        chatcntrl.style.display = "none"; 
+        museumContainer.style.display = "block";
+        museumContainer.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
         });
     }
 });
 
 document.getElementById('chat-container').addEventListener('click', () => {
     if (isMinimized) {
-        // Expand the chat container when clicking the minimized logo
         const chatContainer = document.getElementById('chat-container');
         const chatcntrl = document.getElementById('chat-controls');
-        const welcome = document.getElementById('welcome');
-        var map = document.getElementById('map');
-        chatContainer.classList.remove('minimized');
-        chatContainer.classList.remove('minimized-logo');
+        const museumContainer = document.getElementById('museum-container');
+        const setting = document.getElementById('setting');
+        const welcome = document.getElementById('welcome'); 
+        welcome.textContent = "Welcome to Ticket Pranali";
+        setting.style.display="inline-block";
+        chatContainer.classList.remove('minimized', 'minimized-logo');
         document.getElementById('minimize-button').innerHTML = '<i class="fas fa-minus"></i>';
         isMinimized = false;
-        welcome.textContent = "Welcome to Ticket Pranali";
-        map.classList.replace('container-fluid', 'container');
 
-        // Delay setting the display property to ensure the container is fully expanded
         setTimeout(() => {
-            chatcntrl.style.display = "block";
-        }, 300); // Adjust delay if necessary
+            chatcntrl.style.display = "block"; 
+            museumContainer.style.display = "none";
+        }, 300);
+
+        chatContainer.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
     }
 });
 
 
 
+
+
+let messageSent = false;
+
+function setupDropdownListener(dropdown) {
+    dropdown.addEventListener('change', function() {
+        const selectedValue = this.value; // Get the selected value
+        if (!messageSent) {
+            sendMessage({ message: selectedValue });
+            messageSent = true;
+        }
+        dropdown.parentNode.removeChild(dropdown);
+    });
+}
+
+function pollForDropdown() {
+    const dropdown = document.getElementById('TG');
+    if (dropdown) {
+        setupDropdownListener(dropdown);
+        // Reset messageSent flag when a new dropdown is found
+        messageSent = false;
+    }
+}
+
+// Start polling for the dropdown
+setInterval(pollForDropdown, 1000);
+
 let currentBackButton = null; // Keep track of the current back button
 
 function appendMessage(sender, message, type) {
     const chatBox = document.getElementById('chat-box');
-    
+
     // Remove the previous back button if it exists
     if (currentBackButton) {
         currentBackButton.style.display = 'none';
     }
-    
+
     const messageDiv = document.createElement('div');
     messageDiv.className = `message ${type}`;
-    
+
     const logoDiv = document.createElement('div');
     logoDiv.className = 'message-logo';
 
@@ -413,9 +475,9 @@ document.addEventListener('click', function(event) {
     if (event.target && event.target.id === 'setAmountButton') {
         const amountElement = document.getElementById('total-cost');
         const amount = amountElement ? parseFloat(amountElement.textContent.replace('Total cost: $', '')) : 0;
-        
+
         localStorage.setItem('amount', String(amount));
-        
+
         window.location.href = 'pay'; // Redirect to payment form
     }
 });
