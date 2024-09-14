@@ -434,6 +434,11 @@ function appendMessage(sender, message, type) {
     messageContent.className = 'message-content';
     messageContent.innerHTML = `${sender}: ${message}`; // Use innerHTML to include HTML elements
 
+    // Add specific content for step 8
+    if (type === 'booking' && message.includes('step-8-content')) {
+        messageContent.innerHTML += '<button id="setAmountButton">Set Amount and Go to Form</button>';
+    }
+
     messageDiv.appendChild(logoDiv);
     messageDiv.appendChild(messageContent);
 

@@ -87,8 +87,9 @@ def test():
 @app.route('/get-total-cost')
 def get_total_cost():
     total_cost = session.get('totalCost', 0)
-    return jsonify({'total_cost': total_cost})
-
+    datetime = session.get('datetime', False)
+    return jsonify({'total_cost': total_cost, 'datetime': datetime})
+    
 @app.route('/pay')
 def pay():
     total_cost = session.get('totalCost', 0)
@@ -250,6 +251,7 @@ def handle_booking_chatbot(user_input):
             response_message = "Invalid ages input. Please provide ages separated by commas."
 
     elif current_step == 4:
+        session['datetime'] = False
         language = booking_data.get('language', 'en')
         yes_no_map = {
             'en': {'yes': True, 'no': False},
@@ -322,7 +324,7 @@ def handle_booking_chatbot(user_input):
             return response_message
         else:
             response_message = f"{a}:<br>{dropdown_html}"
-
+        
         # Translate the final response message
         return response_message
 
@@ -330,15 +332,22 @@ def handle_booking_chatbot(user_input):
         nationalities = [n.strip() for n in user_input.split(',')]
         booking_data['nationalities'] = nationalities
         recalculate_cost()
+        session['datetime'] = True
         response_message = "Please provide the date and timeslot you wish to visit."
         booking_data['current_step'] = 6
 
     elif current_step == 6:
+        session['datetime'] = True
         language = booking_data.get('language', 'en')
         try:
-            date_str, timeslot_str = user_input.split()
-            date = datetime.datetime.strptime(date_str, '%d-%m-%Y').date()
-            timeslot = datetime.datetime.strptime(timeslot_str, '%H:%M').time()
+            # Parse the input datetime string
+            dt = datetime.datetime.strptime(user_input, '%Y-%m-%dT%H:%M')
+            
+            # Extract date and time
+            date = dt.date()
+            time = dt.time()
+            
+            # Continue with the rest of your logic
             zz = str(booking_data['tour_guide'])
             zz = translate_text(zz , language)
             eee = translate_text("Please go back to change any details if necessary.", language)
@@ -349,16 +358,18 @@ def handle_booking_chatbot(user_input):
             jjj = translate_text("Date and Time selected:", language)
             kkk = translate_text("If correct, please provide your contact information (email or mobile number)", language)
             
-            if not is_museum_open(date, timeslot):
-                response_message = f"Sorry, the museum is closed on {date_str} at {timeslot_str}. Please choose another date and time."
+            # Check if the museum is open
+            if not is_museum_open(date, time):
+                response_message = f"Sorry, the museum is closed on {date} at {time}. Please choose another date and time."
             else:
+                session['datetime'] = False
                 response_message = (
     f"{eee}\n"
     f"<br>{fff} {booking_data['group_size']}\n"
     f"<br>{ggg} {', '.join(map(str, booking_data['ages']))}\n"
     f"<br>{hhh} {zz}\n"
     f"<br>{iii} {', '.join(booking_data['nationalities'])}\n"
-    f"<br>{jjj} {date} {timeslot}\n"
+    f"<br>{jjj} {date} {time}\n"
     f"<br>{kkk}."
 )
 
@@ -368,9 +379,10 @@ def handle_booking_chatbot(user_input):
                 booking_data['current_step'] = 7
 
         except ValueError:
-            response_message = "Invalid date or timeslot format. Please enter in the format 'DD-MM-YYYY HH:MM'."
+            response_message = "Invalid date or timeslot format. Please enter in the format ''YY-MM-DDTHH:MM, or use the input field below,"
 
     elif current_step == 7:
+        session['datetime'] = False
         contact_info = user_input
         language = booking_data.get('language', 'en')
         d  = translate_text("Thank you! Your booking is confirmed. Your total cost is", language)
