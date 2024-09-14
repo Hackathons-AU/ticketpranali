@@ -321,6 +321,7 @@ document.getElementById('minimize-button').addEventListener('click', (event) => 
     const museumContainer = document.getElementById('museum-container');
     const welcome = document.getElementById('welcome'); 
     const setting = document.getElementById('setting');
+    const pow = document.getElementById('pow');
 
     if (isMinimized) {
         // Expand the chat container
@@ -330,6 +331,7 @@ document.getElementById('minimize-button').addEventListener('click', (event) => 
 
         setTimeout(() => {
             chatcntrl.style.display = "block";
+            pow.style.display = "block";
             museumContainer.style.display = "none"; 
         }, 300); 
     } else {
@@ -339,6 +341,7 @@ document.getElementById('minimize-button').addEventListener('click', (event) => 
         welcome.textContent = " ";
         setting.style.display="none";
         chatcntrl.style.display = "none"; 
+        pow.style.display = "none"; 
         museumContainer.style.display = "block";
         museumContainer.scrollIntoView({
             behavior: 'smooth',
@@ -354,6 +357,7 @@ document.getElementById('chat-container').addEventListener('click', () => {
         const museumContainer = document.getElementById('museum-container');
         const setting = document.getElementById('setting');
         const welcome = document.getElementById('welcome'); 
+        const pow = document.getElementById('pow');
         welcome.textContent = "Welcome to Ticket Pranali";
         setting.style.display="inline-block";
         chatContainer.classList.remove('minimized', 'minimized-logo');
@@ -362,6 +366,7 @@ document.getElementById('chat-container').addEventListener('click', () => {
 
         setTimeout(() => {
             chatcntrl.style.display = "block"; 
+            pow.style.display = "block";
             museumContainer.style.display = "none";
         }, 300);
 
