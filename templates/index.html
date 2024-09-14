@@ -32,6 +32,7 @@
                         </div>
 
 <script>
+
     document.addEventListener('DOMContentLoaded', function() {
         function setAmount() {
             // Access the total_cost value from the server-side
@@ -58,12 +59,34 @@
         .then(response => response.json())
         .then(data => {
             document.getElementById('total-cost').textContent = `${data.total_cost}`;
+            document.getElementById('datetime').textContent = `${data.datetime}`;
+            
+            // Update this condition to a valid check, e.g., checking if datetime exists or is valid
+            if (data.datetime) { // Check if datetime is truthy
+                changeInputType();
+            }
+            else{
+            var inputElement = document.getElementById('user-input');
+    
+    // Change the type of the input element
+    inputElement.type = 'text';
+    }
+            
         })
         .catch(error => console.error('Error fetching total cost:', error));
 }
 
+function changeInputType() {
+    // Get the input element by its ID
+    var inputElement = document.getElementById('user-input');
+    
+    // Change the type of the input element
+    inputElement.type = 'datetime-local'; 
+    console.log(inputElement.value)// Example: Change to 'date'
+}
+
 // Call updateTotalCost periodically
-setInterval(updateTotalCost, 3000); // Update every 5 seconds
+setInterval(updateTotalCost, 3000); // Update every 3 seconds (adjust as needed)
 
 </script>
 
