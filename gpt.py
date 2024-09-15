@@ -66,6 +66,10 @@ def dashboard():
 def museum():
     return render_template('museum.html')
 
+@app.route('/avoid')
+def avoid():
+    return render_template('avoid.html')
+
 def translate_text(text, target_language):
     try:
         translated = translator.translate(text, dest=target_language)

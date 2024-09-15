@@ -16,8 +16,8 @@
 </head>
 <body>
 
-    <div id="home">
-        <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+    <div id="home" class="mb-5">
+        <nav class="navbar navbar-expand-lg navbar-dark custom-navbar fixed-top">
             <a class="navbar-brand nav-lg d-flex flex-row nli" href="#aboutme">
                 <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="navbarimg" alt="Logo" />
             <h1 class="navhead ml-2 mt-auto mb-auto"> Ticket Pranali  </h1>
@@ -33,13 +33,14 @@
                     <a class="nav-link nav-hd" href="#aboutus"> About Us </a>
                     <a class="nav-link nav-hd" href="#faq"> FAQ's </a>
                     <a class="nav-link nav-hd" href="#info">  Contact Us </a>
+                    <a id="ac" class="nav-link nav-hd" href="{{ url_for('avoid') }}">  Avoid Crowd </a>
                     <div class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle nav-hd" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a id="md" class="nav-link dropdown-toggle nav-hd" href="#" id="navbarDropdown2" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Museum Dashboard
                         </a>
                         <div id="customdrop" class="dropdown-menu" aria-labelledby="navbarDropdown2">
-                            <a class="dropdown-item text-white dh" href="{{ url_for('dashboard') }}">M.M Dashboard</a>
-                            <a class="dropdown-item text-white dh" href="{{ url_for('attraction_dashboard') }}">A.A Dashboard</a>
+                            <a id="mm" class="dropdown-item text-white dh" href="{{ url_for('dashboard') }}">M.M Dashboard</a>
+                            <a id="aa" class="dropdown-item text-white dh" href="{{ url_for('attraction_dashboard') }}">A.A Dashboard</a>
                         </div>
                     </div>
                     
@@ -48,9 +49,9 @@
                             Language
                         </a>
                         <div id="customdrop" class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item text-white dh" href="#" data-lang="en">English</a>
-                            <a class="dropdown-item text-white dh" href="#" data-lang="te">Telugu</a>
-                            <a class="dropdown-item text-white dh" href="#" data-lang="hi">Hindi</a>
+                            <a id="en" class="dropdown-item text-white dh" href="#" data-lang="en">English</a>
+                            <a id="te" class="dropdown-item text-white dh" href="#" data-lang="te">Telugu</a>
+                            <a id="hi" class="dropdown-item text-white dh" href="#" data-lang="hi">Hindi</a>
                         </div>
                     </div>
                 </div>
@@ -58,10 +59,10 @@
         </nav>
     </div>
 
-    <div id="common" class="container">
+    <div id="common" class="container mt-5">
         <div class="row">
 
-                <div id="first-sec" class="col-12 mt-2 mb-1">
+                <div id="first-sec" class="col-12 mt-5 mb-1">
                     <h1 id="welcome" class="top-head typewriter-text "> Welcome to Ticket Pranali </h1>
                     <i id="setting" class="settings-icon fas fa-cog"></i> 
                 </div>

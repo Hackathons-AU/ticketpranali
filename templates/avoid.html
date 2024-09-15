@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museum Map with Dynamic Crowds and Adaptive Tour</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .map {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: url('/api/placeholder/1000/800') no-repeat center center;
+            background-size: cover;
+            transition: transform 0.3s;
+        }
+        .section {
+            position: absolute;
+            border: 2px solid black;
+            background: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+            font-size: 12px;
+        }
+        .marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+        .crowd-level {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: background-color 0.5s;
+        }
+        .crowd-level.low { background-color: green; }
+        .crowd-level.medium { background-color: yellow; }
+        .crowd-level.high { background-color: red; }
+        .controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 10;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .path {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: blue;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #info {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="map">
+            <!-- Sections of the museum map -->
+            <div class="section" style="top: 10%; left: 10%; width: 20%; height: 15%;">Indian Miniature Paintings
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 10%; left: 30%; width: 20%; height: 15%;">Buddhist Art
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 10%; left: 50%; width: 20%; height: 15%;">Late Medieval Art
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 10%; left: 70%; width: 20%; height: 15%;">Transparencies of Indian Scripts and Coins
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 25%; left: 10%; width: 20%; height: 15%;">Gupta Terracotta and early Medieval Art
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 25%; left: 30%; width: 20%; height: 15%;">Bronzes
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 25%; left: 50%; width: 20%; height: 15%;">Decorative Arts-II
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 25%; left: 70%; width: 20%; height: 15%;">Jewellery
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 40%; left: 10%; width: 20%; height: 15%;">Gupta Arts
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 40%; left: 30%; width: 20%; height: 15%;">Kushan Gandhara Mathura & Ikshvaku Art
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 40%; left: 50%; width: 20%; height: 15%;">Decorative Arts-I
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 40%; left: 70%; width: 20%; height: 15%;">Harappan Civilization
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 55%; left: 10%; width: 20%; height: 15%;">Auditorium
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 55%; left: 30%; width: 20%; height: 15%;">Library
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 55%; left: 50%; width: 40%; height: 15%;">Entrance Hall
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+            <div class="section" style="top: 70%; left: 10%; width: 40%; height: 10%;">Maurya, Shunga and Satvahana Art
+                <div class="crowd-level" style="top: 20%; left: 20%;"></div>
+            </div>
+
+            <!-- GPS Marker -->
+            <div id="marker" class="marker"></div>
+        </div>
+        <!-- Controls -->
+        <div class="controls">
+            <button onclick="zoomIn()">Zoom In</button>
+            <button onclick="zoomOut()">Zoom Out</button>
+            <button onclick="startTour()">Start Tour</button>
+            <button onclick="stopTour()">Stop Tour</button>
+        </div>
+        <div id="info"></div>
+    </div>
+
+    <script>
+        const marker = document.getElementById('marker');
+        const map = document.querySelector('.map');
+        const infoDiv = document.getElementById('info');
+
+        // Sections with initial crowd levels
+        const sections = [
+            { top: 55, left: 50, crowd: 'medium', name: 'Entrance Hall' },
+            { top: 10, left: 10, crowd: 'low', name: 'Indian Miniature Paintings' },
+            { top: 10, left: 30, crowd: 'medium', name: 'Buddhist Art' },
+            { top: 10, left: 50, crowd: 'low', name: 'Late Medieval Art' },
+            { top: 10, left: 70, crowd: 'low', name: 'Transparencies of Indian Scripts and Coins' },
+            { top: 25, left: 10, crowd: 'medium', name: 'Gupta Terracotta and early Medieval Art' },
+            { top: 25, left: 30, crowd: 'high', name: 'Bronzes' },
+            { top: 25, left: 50, crowd: 'low', name: 'Decorative Arts-II' },
+            { top: 25, left: 70, crowd: 'medium', name: 'Jewellery' },
+            { top: 40, left: 10, crowd: 'high', name: 'Gupta Arts' },
+            { top: 40, left: 30, crowd: 'low', name: 'Kushan Gandhara Mathura & Ikshvaku Art' },
+            { top: 40, left: 50, crowd: 'medium', name: 'Decorative Arts-I' },
+            { top: 40, left: 70, crowd: 'high', name: 'Harappan Civilization' },
+            { top: 55, left: 10, crowd: 'low', name: 'Auditorium' },
+            { top: 55, left: 30, crowd: 'medium', name: 'Library' },
+            { top: 70, left: 10, crowd: 'medium', name: 'Maurya, Shunga and Satvahana Art' },
+        ];
+
+        let currentPosition = sections[0];
+        let pathElements = [];
+        let tourInterval;
+        let crowdUpdateInterval;
+        let unvisitedSections = [...sections];
+
+        function getCrowdScore(crowd) {
+            switch(crowd) {
+                case 'low': return 1;
+                case 'medium': return 2;
+                case 'high': return 3;
+                default: return 1;
+            }
+        }
+
+        function getDistance(pos1, pos2) {
+            return Math.sqrt(Math.pow(pos1.top - pos2.top, 2) + Math.pow(pos1.left - pos2.left, 2));
+        }
+
+        function getNextPosition() {
+            if (unvisitedSections.length === 0) {
+                return sections[0]; // Return to entrance if all sections visited
+            }
+
+            let bestSection = unvisitedSections[0];
+            let bestScore = Infinity;
+
+            for (const section of unvisitedSections) {
+                const distance = getDistance(currentPosition, section);
+                const crowdScore = getCrowdScore(section.crowd);
+                const score = distance * crowdScore;
+
+                if (score < bestScore) {
+                    bestScore = score;
+                    bestSection = section;
+                }
+            }
+
+            unvisitedSections = unvisitedSections.filter(s => s !== bestSection);
+            return bestSection;
+        }
+
+        function updateMarker() {
+            const nextPosition = getNextPosition();
+            marker.style.top = `${nextPosition.top}%`;
+            marker.style.left = `${nextPosition.left}%`;
+            
+            // Draw path
+            const pathElement = document.createElement('div');
+            pathElement.className = 'path';
+            pathElement.style.top = `${(currentPosition.top + nextPosition.top) / 2}%`;
+            pathElement.style.left = `${(currentPosition.left + nextPosition.left) / 2}%`;
+            map.appendChild(pathElement);
+            pathElements.push(pathElement);
+
+            currentPosition = nextPosition;
+
+            infoDiv.textContent = `Current Location: ${nextPosition.name} (Crowd level: ${nextPosition.crowd})`;
+            console.log(`Moved to: ${nextPosition.name} (Crowd level: ${nextPosition.crowd})`);
+
+            if (unvisitedSections.length === 0) {
+                infoDiv.textContent += " - Tour Completed!";
+                stopTour();
+            }
+        }
+
+        function startTour() {
+            if (!tourInterval) {
+                clearPath();
+                currentPosition = sections[0]; // Start from entrance
+                unvisitedSections = [...sections.slice(1)]; // Reset unvisited sections, excluding entrance
+                marker.style.top = `${currentPosition.top}%`;
+                marker.style.left = `${currentPosition.left}%`;
+                infoDiv.textContent = `Starting tour from: ${currentPosition.name}`;
+                tourInterval = setInterval(updateMarker, 2000); // Update position every 2 seconds
+                if (!crowdUpdateInterval) {
+                    crowdUpdateInterval = setInterval(updateCrowdLevels, 5000); // Update crowd levels every 5 seconds
+                }
+            }
+        }
+
+        function stopTour() {
+            if (tourInterval) {
+                clearInterval(tourInterval);
+                tourInterval = null;
+            }
+            if (crowdUpdateInterval) {
+                clearInterval(crowdUpdateInterval);
+                crowdUpdateInterval = null;
+            }
+        }
+
+        function clearPath() {
+            pathElements.forEach(el => el.remove());
+            pathElements = [];
+        }
+
+        function updateCrowdLevels() {
+            const crowdLevels = ['low', 'medium', 'high'];
+            sections.forEach((section, index) => {
+                const randomCrowd = crowdLevels[Math.floor(Math.random() * crowdLevels.length)];
+                section.crowd = randomCrowd;
+                const crowdElement = document.querySelectorAll('.crowd-level')[index];
+                crowdElement.className = `crowd-level ${randomCrowd}`;
+            });
+            console.log("Crowd levels updated");
+        }
+
+        // Zoom functions
+        let zoomLevel = 1;
+
+        function zoomIn() {
+            zoomLevel = Math.min(zoomLevel + 0.1, 2);
+            document.querySelector('.map').style.transform = `scale(${zoomLevel})`;
+        }
+
+        function zoomOut() {
+            zoomLevel = Math.max(zoomLevel - 0.1, 0.5);
+            document.querySelector('.map').style.transform = `scale(${zoomLevel})`;
+        }
+
+        // Initialize crowd levels
+        updateCrowdLevels();
+    </script>
+</body>
+</html>

@@ -112,6 +112,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('ft10').textContent = langData.ft10;
                 document.getElementById('ft11').textContent = langData.ft11;
 
+                document.getElementById('en').textContent = langData.en;
+                document.getElementById('te').textContent = langData.te;
+                document.getElementById('hi').textContent = langData.hi;
+
+                document.getElementById('md').textContent = langData.md;
+                document.getElementById('mm').textContent = langData.mm;
+                document.getElementById('aa').textContent = langData.aa;
+
+                document.getElementById('ac').textContent = langData.ac;
+
+
 
                 console.log('Language change successful.'); // Debugging line
             })
@@ -347,6 +358,7 @@ document.getElementById('minimize-button').addEventListener('click', (event) => 
             behavior: 'smooth',
             block: 'start'
         });
+        window.scrollBy(0, -300);
     }
 });
 
@@ -374,6 +386,7 @@ document.getElementById('chat-container').addEventListener('click', () => {
             behavior: 'smooth',
             block: 'start'
         });
+        window.scrollBy(0, -50);
     }
 });
 
