@@ -122,6 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 document.getElementById('ac').textContent = langData.ac;
 
+                document.getElementById('v1').textContent = langData.v1;
+
 
 
                 console.log('Language change successful.'); // Debugging line

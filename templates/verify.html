@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Blockchain Ticket Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #b0edf5
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #5cb85c;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        #results {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9e9e9;
+            border-radius: 4px;
+        }
+        .section {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .transaction-history {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .transaction {
+            border-bottom: 1px solid #ddd;
+            padding: 5px 0;
+        }
+        .transaction:last-child {
+            border-bottom: none;
+        }
+        .status-valid {
+            color: green;
+        }
+        .status-invalid, .status-used, .status-expired {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Comprehensive Blockchain Ticket Verification</h1>
+        <div class="input-group">
+            <label for="ticketId">Enter Ticket ID:</label>
+            <input type="text" id="ticketId" placeholder="e.g., 0x1234...">
+        </div>
+        <button onclick="verifyTicket()">Verify Ticket</button>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        async function verifyTicket() {
+            const ticketId = document.getElementById('ticketId').value;
+            const resultsDiv = document.getElementById('results');
+
+            if (!ticketId) {
+                resultsDiv.innerHTML = '<p style="color: red;">Please enter a ticket ID.</p>';
+                return;
+            }
+
+            resultsDiv.innerHTML = '<p>Verifying ticket on the blockchain...</p>';
+
+            try {
+                // This is a mock blockchain verification call. In a real application, you would interact with a blockchain network here.
+                const response = await mockBlockchainVerification(ticketId);
+
+                if (response.isValid) {
+                    resultsDiv.innerHTML = `
+                        <h2>Ticket Verification Results</h2>
+                        <div class="section">
+                            <h3>Ticket Status</h3>
+                            <p class="status-${response.status.toLowerCase()}">${response.status}</p>
+                        </div>
+                        <div class="section">
+                            <h3>Event Information</h3>
+                            <p><strong>Event Name:</strong> ${response.eventName}</p>
+                            <p><strong>Date:</strong> ${response.eventDate}</p>
+                            <p><strong>Time:</strong> ${response.eventTime}</p>
+                            <p><strong>Location:</strong> ${response.eventLocation}</p>
+                        </div>
+                        <div class="section">
+                            <h3>Ownership Details</h3>
+                            <p><strong>Current Owner:</strong> ${response.currentOwner}</p>
+                        </div>
+                        <div class="section">
+                            <h3>Transaction History</h3>
+                            <div class="transaction-history">
+                                ${response.transactionHistory.map(tx => `
+                                    <div class="transaction">
+                                        <p><strong>Date:</strong> ${tx.date}</p>
+                                        <p><strong>From:</strong> ${tx.from}</p>
+                                        <p><strong>To:</strong> ${tx.to}</p>
+                                        <p><strong>Transaction Hash:</strong> ${tx.hash}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="section">
+                            <h3>Authenticity Verification</h3>
+                            <p>${response.authenticity}</p>
+                            <p><strong>Smart Contract Address:</strong> ${response.contractAddress}</p>
+                        </div>
+                    `;
+                } else {
+                    resultsDiv.innerHTML = '<p style="color: red;">Invalid ticket. This ticket was not found on the blockchain.</p>';
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = '<p style="color: red;">An error occurred while verifying the ticket on the blockchain. Please try again later.</p>';
+            }
+        }
+
+        // This function simulates a blockchain verification process
+        function mockBlockchainVerification(ticketId) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    // Simulating a successful response for demonstration purposes
+                    if (ticketId.startsWith('0x')) {
+                        resolve({
+                            isValid: true,
+                            status: 'Valid', // Could be 'Valid', 'Invalid', 'Used', or 'Expired'
+                            eventName: 'Museum Ticket',
+                            eventDate: '2024-09-15',
+                            eventTime: '18:00 UTC',
+                            eventLocation: 'Delhi',
+                            currentOwner: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+                            transactionHistory: [
+                                {
+                                    date: '2024-05-01 10:00 UTC',
+                                    from: '0x0000000000000000000000000000000000000000',
+                                    to: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+                                    hash: '0x' + '0'.repeat(63) + '1'
+                                },
+                                {
+                                    date: '2024-06-15 14:30 UTC',
+                                    from: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+                                    to: '0x3A9f14A9aaEFABe4E6CD4A325FDD8ce1321B7B1B',
+                                    hash: '0x' + '0'.repeat(63) + '2'
+                                },
+                                {
+                                    date: '2024-07-20 09:15 UTC',
+                                    from: '0x3A9f14A9aaEFABe4E6CD4A325FDD8ce1321B7B1B',
+                                    to: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
+                                    hash: '0x' + '0'.repeat(63) + '3'
+                                }
+                            ],
+                            authenticity: 'This ticket has been verified as authentic and issued by the official event organizer.',
+                            contractAddress: '0x' + 'a'.repeat(40)
+                        });
+                    } else {
+                        resolve({ isValid: false });
+                    }
+                }, 2000); // Simulating blockchain query delay
+            });
+        }
+    </script>
+</body>
+</html>

@@ -70,6 +70,10 @@ def museum():
 def avoid():
     return render_template('avoid.html')
 
+@app.route('/verify')
+def verify():
+    return render_template('verify.html')
+
 def translate_text(text, target_language):
     try:
         translated = translator.translate(text, dest=target_language)
