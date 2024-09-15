@@ -386,7 +386,9 @@ document.getElementById('chat-container').addEventListener('click', () => {
             behavior: 'smooth',
             block: 'start'
         });
-        window.scrollBy(0, -50);
+        setTimeout(() => {
+            window.scrollBy(0, -1200);
+        }, 500); 
     }
 });
 

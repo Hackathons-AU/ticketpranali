@@ -469,7 +469,7 @@ left: 1100px; /* Adjust as needed */
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    position: fixed;
+    position: fixed !important;
     bottom: 20px;
     right: 20px;
     cursor: pointer;
@@ -579,7 +579,6 @@ left: 1100px; /* Adjust as needed */
     #chat-container{
         position: relative !important;
     }
-
 }
 
 /* @media (min-width:992px) {
