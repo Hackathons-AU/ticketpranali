@@ -8,7 +8,7 @@ from googletrans import Translator
 app = Flask(__name__)
 app.secret_key = 'supersecretkeyorisitreally?'
 
-API_KEY = "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"
+API_KEY = "SECRET_KEY"
 API_URL = "https://api.openai.com/v1/chat/completions"
 
 # Ticket and discount prices
