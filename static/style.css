@@ -5,6 +5,45 @@ body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+body::-webkit-scrollbar {
+    width: 8px; 
+}
+
+body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 25px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #45f5ef;
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background-color: #0aa6a1; 
+}
+
+#chat-box::-webkit-scrollbar {
+    width: 4px; 
+}
+
+#chat-box::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 25px;
+}
+
+#chat-box::-webkit-scrollbar-thumb {
+    background-color: #45f5ef;
+    border-radius: 10px;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#chat-box::-webkit-scrollbar-thumb:hover {
+    background-color: #0aa6a1; 
 }
 
 .top-head{
@@ -15,8 +54,110 @@ body {
     text-align: center;
 }
 
+
+/* Typewriter effect */
+@keyframes typewriter {
+    from {
+        width: 0;
+    }
+    to {
+        width: 95%;
+    }
+}
+
+/* Rotating settings icon */
+@keyframes rotateSettings {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Style for the typewriter text */
+.typewriter-text {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 3px solid transparent; /* Hide the cursor */
+    animation: typewriter 3s steps(30) 0s 1 normal both; /* Adjust timing as needed */
+    font-size: 30px; /* Adjust text size */
+    line-height: 1.2; /* Adjust line height to align with the icon */
+    vertical-align: middle;
+}
+
+/* Style for the rotating settings icon */
+.settings-icon {
+    display: inline-block;
+    vertical-align: middle; /* Align icon with the text */
+    margin-left: 8px; /* Adjust spacing between text and icon */
+    font-size: 35px; /* Adjust icon size */
+    animation: rotateSettings 2s linear infinite; /* Continuous rotation */
+    color: #0eaba6; /* Icon color */
+}
+
+/* Container to make sure text and icon are aligned */
+.typewriter-container {
+    display: inline-block;
+}
+
+#pow{
+    font-size: 16px;
+    color: #98f5d9;
+    background-color:rgba(0, 0, 0, 0.3);
+}
+
+.fade-in-section {
+    opacity: 0;
+    transform: translateY(30px); 
+    transition: opacity 1.0s ease-out, transform 1.0s ease-out;
+    will-change: opacity, transform;
+}
+
+.fade-in-section.is-visible {
+    opacity: 1;
+    transform: translateY(0); 
+}
+
+
 .custom-navbar{
     background-color: #4bb2bf;
+}
+/* Add this to your CSS file */
+.chatbot-message {
+    border-radius: 25px;
+    padding: 10px;
+    max-width: 90%; /* Adjust this percentage as needed */
+    word-wrap: break-word;
+    background-color: #f0f0f0;
+    color: #333;
+    display: inline-block; /* Use inline-block to fit around the content */
+    margin: 5px 0; /* Space between messages */
+}
+/* CSS for the popup message */
+.popup-message {
+    position: fixed;
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Offset by half its own width and height */
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s, visibility 0.5s;
+    z-index: 1000; /* Ensure it appears above other elements */
+    text-align: center;
+    max-width: 80%;
+}
+
+/* CSS class to show the popup */
+.popup-message.show {
+    opacity: 1;
+    visibility: visible;
 }
 
 .back-button {
@@ -25,17 +166,17 @@ body {
     border: none;
     border-radius: 25px;
     padding: 10px 20px;
-    font-size: 16px; 
+    font-size: 16px;
     cursor: pointer;
     margin-top: 10px;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    display: block; 
-    text-align: center; 
+    display: block;
+    text-align: center;
 }
 
 
 .back-button:hover {
-    background-color: #0056b3; 
+    background-color: #0056b3;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -61,26 +202,6 @@ body {
     cursor: not-allowed;
 }
 
-/* Button hover effect */
-#setAmountButton:hover {
-    background-color: #0056b3; /* Darker background color on hover */
-}
-
-/* Specific styles for setAmountButton */
-#setAmountButton {
-    margin-top: 10px; 
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px; 
-    padding: 10px 20px; 
-    cursor: pointer; 
-    transition: background-color 0.3s; /* Smooth background color transition */
-    padding: 10px;
-    border-radius: 10px;
-}
 
 /* Optional: Style for messages with buttons */
 .message.booking .message-content {
@@ -102,7 +223,7 @@ body {
 
 #customdrop {
     min-width: 100px;
-    max-width: 150px; 
+    max-width: 200px;
     width: auto;
     z-index: 1000;
     background-color: #4bb2bf;
@@ -273,6 +394,7 @@ left: 1100px; /* Adjust as needed */
     background-repeat: no-repeat;
     background-position: center;
     height: 400px;
+    overflow-x: hidden;
     overflow-y: auto;
     padding: 10px;
     background-color: #f9f9f9;
@@ -357,7 +479,7 @@ left: 1100px; /* Adjust as needed */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    position:  absolute;
+    position:  relative;
     z-index: 999;
     width: 100%;
     border-radius: 10px;
@@ -371,7 +493,7 @@ left: 1100px; /* Adjust as needed */
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    position: fixed;
+    position: fixed !important;
     bottom: 20px;
     right: 20px;
     cursor: pointer;
@@ -476,23 +598,19 @@ left: 1100px; /* Adjust as needed */
     100% { transform: rotate(360deg); }
 }
 
+
 @media (max-width:991px){
+    #chat-container{
+        position: relative !important;
+    }
+}
+
+/* @media (min-width:992px) {
     .nli{
-        margin-right: 0px !important;
+        margin-left: 320px !important;
     }
 
     .nlc{
-        margin-left: 0px !important;
+        margin-left: 250px !important;
     }
-    
-}
-
-@media (min-width:992px) {
-    .nli{
-        margin-right: 200px !important;
-    }
-
-    .nlc{
-        margin-left: 150px !important;
-    }
-}
+} */

@@ -28,6 +28,9 @@ const storedAmount = localStorage.getItem('amount');
                         handler: function(response) {
                             // Handle successful payment here
                             console.log("Payment successful:", response);
+                            // Redirect to a new page immediately
+window.location.href = 'https://hack4bharat.pythonanywhere.com/ticket';
+
                             // Redirect to a success page or display a confirmation message
                         },
                         modal: {
@@ -47,4 +50,3 @@ const storedAmount = localStorage.getItem('amount');
                 }
             });
         });
-    

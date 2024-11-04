@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museum Ticket Generator</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+        }
+        #ticketContainer {
+            width: 350px;
+            height: 200px;
+            background-color: #ffffff;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        #ticketContainer::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 100px;
+            height: 100px;
+            background-color: #ff9800;
+            transform: rotate(45deg);
+        }
+        #ticketContainer::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 100px;
+            height: 100px;
+            background-color: #4caf50;
+            transform: rotate(45deg);
+        }
+        h2 {
+            color: #333;
+            margin-top: 0;
+        }
+        p {
+            margin: 10px 0;
+        }
+        #visitorName {
+            font-weight: bold;
+            color: #4caf50;
+        }
+        #eventName {
+            font-style: italic;
+            color: #ff9800;
+        }
+        #ticketNumber {
+            position: absolute;
+            bottom: 10px;
+            right: 100px;
+            font-size: 0.8em;
+            color: #999;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 5px 10px;
+        }
+        #shareButtons {
+            margin-top: 20px;
+        }
+        .shareButton {
+            display: inline-block;
+            margin: 0 5px;
+            padding: 5px 10px;
+            background-color: #3b5998;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .shareButton.twitter {
+            background-color: #1da1f2;
+        }
+        .shareButton.linkedin {
+            background-color: #0077b5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="ticketContainer">
+            <h2>Ticket to Delhi National Museum</h2>
+            <p>Welcome, <span id="visitorName">Guest</span>!</p>
+            <p>Event: <span id="eventName">Special Exhibition</span></p>
+            <p>Date: <span id="eventDate">October 15, 2024</span></p>
+            <span id="ticketNumber">#0x1234</span>
+        </div>
+        <input type="text" id="nameInput" placeholder="Enter your name">
+        <button onclick="updateTicket()">Set Name</button>
+        <button onclick="shareTicket()">Share Ticket</button>
+        <br>
+<button onclick="window.location.href='https://hack4bharat.pythonanywhere.com/';" class="GFG">Back</button>
+        <div id="shareButtons" style="display:none;">
+            <a href="#" class="shareButton facebook" onclick="shareToFacebook()">Share on Facebook</a>
+            <a href="#" class="shareButton twitter" onclick="shareToTwitter()">Share on Twitter</a>
+            <a href="#" class="shareButton linkedin" onclick="shareToLinkedIn()">Share on LinkedIn</a>
+        </div>
+    </div>
+
+    <script>
+        function updateTicket() {
+            const name = document.getElementById('nameInput').value || 'Guest';
+            document.getElementById('visitorName').textContent = name;
+            document.getElementById('ticketNumber').textContent = '#0x1234';
+        }
+
+        function shareTicket() {
+            html2canvas(document.getElementById('ticketContainer')).then(function(canvas) {
+                const imgData = canvas.toDataURL('image/png');
+                const link = document.createElement('a');
+                link.href = imgData;
+                link.download = 'museum_ticket.png';
+                link.click();
+                document.getElementById('shareButtons').style.display = 'block';
+            });
+        }
+
+        function shareToFacebook() {
+            const imgData = document.querySelector('a[download]').href;
+            const encodedImgData = encodeURIComponent(imgData);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedImgData}`, '_blank');
+        }
+
+        function shareToTwitter() {
+            const text = encodeURIComponent('Check out my ticket to the museum\'s special exhibition!');
+            window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+        }
+
+        function shareToLinkedIn() {
+            const imgData = document.querySelector('a[download]').href;
+            const encodedImgData = encodeURIComponent(imgData);
+            window.open(`https://www.linkedin.com/shareArticle?mini=true&url=${encodedImgData}`, '_blank');
+        }
+    </script>
+
+</body>
+</html>
+

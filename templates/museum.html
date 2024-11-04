@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Museum Mapping Prototype</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0 auto;
+            padding: 0px;
+            background-color: #b0edf5;
+            overflow-x: hidden;
+            overflow-y: scroll;
+        }
+
+        body::-webkit-scrollbar {
+            width: 8px; 
+            margin-left: 0px;
+        }
+
+        body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 25px;
+        }
+
+        body::-webkit-scrollbar-thumb {
+            background-color: #45f5ef;
+            border-radius: 10px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        body::-webkit-scrollbar-thumb:hover {
+            background-color: #0aa6a1; 
+        }
+
+
+        .container {
+            background-color: #b0edf5;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background-color: #ecf0f1;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        .tab.active {
+            background-color: #3498db;
+            color: #fff;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .map-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .info-panel {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .exhibit-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .nav-button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .nav-button:hover {
+            background-color: #2980b9;
+        }
+        .exhibit-info {
+            text-align: center;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        #directionsResult {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e8f4f8;
+            border-radius: 4px;
+        }
+        .sketchfab-embed-wrapper {
+            width: 100%;
+            height: 500px;
+            margin-bottom: 20px;
+        }
+        .sketchfab-embed-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+           
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>3D Museum Mapping Prototype</h1>
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('internal')">Internal Map</button>
+            <button class="tab" onclick="showTab('external')">External Map</button>
+        </div>
+        <div id="internal" class="tab-content active">
+            <div class="map-container">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" class="map-image">
+                  <!-- SVG content as before -->
+                  <rect width="800" height="400" fill="#f0f0f0"/>
+                  <rect x="50" y="50" width="200" height="150" fill="#fff" stroke="#333" stroke-width="2"/>
+                  <rect x="300" y="50" width="200" height="150" fill="#fff" stroke="#333" stroke-width="2"/>
+                  <rect x="550" y="50" width="200" height="150" fill="#fff" stroke="#333" stroke-width="2"/>
+                  <rect x="50" y="250" width="350" height="100" fill="#fff" stroke="#333" stroke-width="2"/>
+                  <rect x="450" y="250" width="300" height="100" fill="#fff" stroke="#333" stroke-width="2"/>
+                  <text x="150" y="125" font-family="Arial" font-size="14" text-anchor="middle">Ancient Egypt Gallery</text>
+                  <text x="400" y="125" font-family="Arial" font-size="14" text-anchor="middle">Modern Art Exhibition</text>
+                  <text x="650" y="125" font-family="Arial" font-size="14" text-anchor="middle">Dinosaur Fossils Hall</text>
+                  <text x="225" y="300" font-family="Arial" font-size="14" text-anchor="middle">Interactive Zone</text>
+                  <text x="600" y="300" font-family="Arial" font-size="14" text-anchor="middle">Special Exhibits</text>
+                  <path d="M100 375 Q400 50 700 375" stroke="#3498db" stroke-width="3" fill="none" stroke-dasharray="5,5"/>
+                  <circle cx="150" cy="80" r="15" fill="#e74c3c" opacity="0.7"/>
+                  <circle cx="400" cy="80" r="15" fill="#f39c12" opacity="0.7"/>
+                  <circle cx="650" cy="80" r="15" fill="#2ecc71" opacity="0.7"/>
+                  <path d="M480 270 l20 -20 l20 20 l-20 20 z" fill="#9b59b6"/>
+                  <circle cx="500" cy="270" r="5" fill="#fff"/>
+                  <circle cx="70" cy="270" r="10" fill="#3498db"/>
+                  <path d="M65 270 h10 m-5 -5 v10" stroke="#fff" stroke-width="2"/>
+                  <rect x="10" y="10" width="120" height="80" fill="#fff" stroke="#333" stroke-width="1"/>
+                  <circle cx="25" cy="25" r="5" fill="#e74c3c"/>
+                  <text x="35" y="30" font-family="Arial" font-size="10">High Traffic</text>
+                  <circle cx="25" cy="45" r="5" fill="#f39c12"/>
+                  <text x="35" y="50" font-family="Arial" font-size="10">Medium Traffic</text>
+                  <circle cx="25" cy="65" r="5" fill="#2ecc71"/>
+                  <text x="35" y="70" font-family="Arial" font-size="10">Low Traffic</text>
+                  <path d="M20 85 l10 -10 l10 10 l-10 10 z" fill="#9b59b6" transform="translate(0, -5)"/>
+                  <text x="35" y="90" font-family="Arial" font-size="10">AR Experience</text>
+                </svg>
+            </div>
+            <div class="info-panel">
+                <h2>Current Exhibit: <span id="exhibitName"></span></h2>
+                <p>Crowd Level: <span id="crowdLevel"></span></p>
+                <p>Average Dwell Time: <span id="dwellTime"></span></p>
+            </div>
+            <div class="exhibit-navigation">
+                <button class="nav-button" onclick="navigateExhibit(-1)">Previous Exhibit</button>
+                <div class="exhibit-info">
+                    <h3 id="exhibitInfoName"></h3>
+                </div>
+                <button class="nav-button" onclick="navigateExhibit(1)">Next Exhibit</button>
+            </div>
+        </div>
+        <div id="external" class="tab-content">
+            <div class="map-container">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" class="map-image">
+                    <!-- Background -->
+                    <rect width="800" height="400" fill="#e0e0e0"/>
+
+                    <!-- Museum Building -->
+                    <rect x="100" y="100" width="600" height="200" fill="#ffffff" stroke="#333" stroke-width="2"/>
+                    <text x="400" y="190" font-family="Arial" font-size="18" text-anchor="middle" fill="#333">The Grand Museum</text>
+
+                    <!-- Landmarks -->
+                    <circle cx="200" cy="250" r="10" fill="#e74c3c"/>
+                    <text x="200" y="270" font-family="Arial" font-size="12" text-anchor="middle" fill="#333">Parking</text>
+
+                    <circle cx="400" cy="250" r="10" fill="#f39c12"/>
+                    <text x="400" y="270" font-family="Arial" font-size="12" text-anchor="middle" fill="#333">Entrance</text>
+
+                    <circle cx="600" cy="250" r="10" fill="#2ecc71"/>
+                    <text x="600" y="270" font-family="Arial" font-size="12" text-anchor="middle" fill="#333">Exit</text>
+
+                    <!-- Directional Indicators -->
+                    <path d="M50 350 L50 320 L80 320 L80 350 Z" fill="#3498db"/>
+                    <text x="65" y="340" font-family="Arial" font-size="14" text-anchor="middle" fill="#fff">N</text>
+
+                    <path d="M750 350 L750 320 L720 320 L720 350 Z" fill="#3498db"/>
+                    <text x="735" y="340" font-family="Arial" font-size="14" text-anchor="middle" fill="#fff">S</text>
+
+                    <path d="M400 50 L370 80 L430 80 Z" fill="#3498db"/>
+                    <text x="400" y="70" font-family="Arial" font-size="14" text-anchor="middle" fill="#fff">E</text>
+
+                    <path d="M400 350 L370 320 L430 320 Z" fill="#3498db"/>
+                    <text x="400" y="330" font-family="Arial" font-size="14" text-anchor="middle" fill="#fff">W</text>
+                </svg>
+            </div>
+            <div class="sketchfab-embed-wrapper">
+                <iframe src="https://www.google.com/maps/embed?pb=!4v1726254496588!6m8!1m7!1saeaLrh-cT0UDpRE_IYkkBw!2m2!1d28.6122259!2d77.2196811!3f135.23382189368982!4f-18.8510940794679!5f0.7820865974627469" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+            </div>
+            
+            
+            <div id="directionsResult"></div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            const tabs = document.querySelectorAll('.tab');
+            const contents = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            contents.forEach(content => content.classList.remove('active'));
+            document.querySelector(`.tab[onclick="showTab('${tabId}')"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        let currentExhibitIndex = 0;
+        const exhibits = [
+            { name: "Ancient Egypt Gallery", crowd: "High Traffic", dwellTime: "30 minutes" },
+            { name: "Modern Art Exhibition", crowd: "Medium Traffic", dwellTime: "20 minutes" },
+            { name: "Dinosaur Fossils Hall", crowd: "Low Traffic", dwellTime: "40 minutes" },
+            { name: "Interactive Zone", crowd: "High Traffic", dwellTime: "15 minutes" },
+            { name: "Special Exhibits", crowd: "Medium Traffic", dwellTime: "25 minutes" }
+        ];
+
+        function updateExhibitInfo() {
+            const exhibit = exhibits[currentExhibitIndex];
+            document.getElementById('exhibitName').innerText = exhibit.name;
+            document.getElementById('crowdLevel').innerText = exhibit.crowd;
+            document.getElementById('dwellTime').innerText = exhibit.dwellTime;
+            document.getElementById('exhibitInfoName').innerText = exhibit.name;
+        }
+
+        function navigateExhibit(direction) {
+            currentExhibitIndex = (currentExhibitIndex + direction + exhibits.length) % exhibits.length;
+            updateExhibitInfo();
+        }
+
+        // Initialize with the first exhibit
+        updateExhibitInfo();
+
+    
+    </script>
+</body>
+</html> 

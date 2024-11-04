@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attraction Analytics Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        h1, h2 {
+            margin-top: 0;
+        }
+        h1 {
+            font-size: 2em;
+            color: #333;
+        }
+        h2 {
+            font-size: 1.5em;
+            color: #555;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #777;
+            font-size: 0.9em;
+        }
+        @media (max-width: 600px) {
+            .chart-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Attraction Analytics Dashboard</h1>
+    <div class="dashboard">
+        <div class="card">
+            <h2>Visitor Interests</h2>
+            <div class="chart-container">
+                <canvas id="interestsChart"></canvas>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Booking Patterns</h2>
+            <div class="chart-container">
+                <canvas id="bookingChart"></canvas>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Feedback Sentiment</h2>
+            <div class="chart-container">
+                <canvas id="sentimentChart"></canvas>
+            </div>
+        </div>
+        <div class="card">
+            <h2>User Journey</h2>
+            <div class="chart-container">
+                <canvas id="journeyChart"></canvas>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Visitor Origin</h2>
+            <div class="chart-container">
+                <canvas id="originChart"></canvas>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Day-wise Traffic</h2>
+            <div class="chart-container">
+                <canvas id="dayTrafficChart"></canvas>
+            </div>
+        </div>
+        <div class="card">
+            <h2>Time-wise Traffic</h2>
+            <div class="chart-container">
+                <canvas id="timeTrafficChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        © 2024 The Grand Museum - Analytics Dashboard
+    </footer>
+
+    <script>
+        // Visitor Interests
+        new Chart(document.getElementById('interestsChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Rides', 'Shows', 'Food', 'Shopping', 'Other'],
+                datasets: [{
+                    data: [30, 25, 20, 15, 10],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Visitor Interests'
+                    }
+                }
+            }
+        });
+
+        // Booking Patterns
+        new Chart(document.getElementById('bookingChart'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Bookings',
+                    data: [1000, 1500, 2000, 1800, 2200, 2500],
+                    borderColor: '#36A2EB',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Monthly Bookings'
+                    }
+                }
+            }
+        });
+
+        // Feedback Sentiment
+        new Chart(document.getElementById('sentimentChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Positive', 'Neutral', 'Negative'],
+                datasets: [{
+                    data: [70, 20, 10],
+                    backgroundColor: ['#4BC0C0', '#FFCE56', '#FF6384']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Feedback Sentiment'
+                    }
+                }
+            }
+        });
+
+        // User Journey
+        new Chart(document.getElementById('journeyChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Landing', 'Browsing', 'Selection', 'Checkout', 'Confirmation'],
+                datasets: [{
+                    label: 'User Drop-off',
+                    data: [100, 80, 60, 40, 35],
+                    backgroundColor: '#36A2EB'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'User Journey'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Visitor Origin
+        new Chart(document.getElementById('originChart'), {
+            type: 'bar',
+            data: {
+                labels: ['California', 'New York', 'Texas', 'Florida', 'Illinois'],
+                datasets: [{
+                    label: 'Visitors',
+                    data: [5000, 4000, 3000, 2500, 2000],
+                    backgroundColor: '#FFCE56'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Top 5 Visitor Origins'
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Day-wise Traffic
+        new Chart(document.getElementById('dayTrafficChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                datasets: [{
+                    label: 'Visitors',
+                    data: [200, 400, 350, 500, 600, 800, 900],
+                    backgroundColor: '#FF6384'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Day-wise Traffic'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Time-wise Traffic
+        new Chart(document.getElementById('timeTrafficChart'), {
+            type: 'line',
+            data: {
+                labels: ['Morning (9-12)', 'Afternoon (12-3)', 'Evening (3-6)', 'Night (6-9)'],
+                datasets: [{
+                    label: 'Visitors',
+                    data: [300, 500, 800, 600],
+                    borderColor: '#36A2EB',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Time-wise Traffic'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
